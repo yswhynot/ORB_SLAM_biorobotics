@@ -20,15 +20,7 @@
 		<Tracking>
 			GrabImageMonocular() {
 				if(!initialized) {
-					mpIniORBextractor = new ORBextractor();
-					<ORBExtractor>
-						ORBextractor() {
-							resize_everything
-							factor = 1.0f / scaleFactor;
-							nDesiredFeaturesPerScale = nfeatures*(1 - factor)/(1 - pow(factor, nlevels));
-							do_ORB_settings
-						}
-					</ORBExtractor>
+					<ORBExtractor> mpIniORBextractor = new ORBextractor(); </ORBExtractor>
 				}
 				Track();
 			}
@@ -37,20 +29,7 @@
 				if(!initialized) {
 					MonocularInitialization();
 				} else {
-					ORBmatcher matcher(nnratio = 0.9, checkOrientation = true);
-					<ORBMatcher>
-						SearchForInitialization() {
-							TH_LOW = 50;
-							HISTO_LENGTH = 30;
-							<Frame>
-								frame.GetFeaturesInArea() {
-									knn_top_2
-									match_orientation
-								}
-							</Frame>
-						}
-
-					</ORBMatcher>
+					
 				}
 			}
 
@@ -68,7 +47,51 @@
 					}
 				}
 				</Frame>
+				<ORBMatcher> ORBmatcher matcher(nnratio = 0.9, checkOrientation = true); </ORBMatcher>
+
+				if(matcher_num < 100)
+					return
+
+				Initializer();
+				CreateInitialMapMonocular() {
+					update_all
+					<Optimizer> GlobalBundleAdjustemnt(iteration = 20); </Optimizer>
+				}
 			}
 		</Tracking>
 	}
 </System>
+
+<ORBExtractor>
+	ORBextractor() {
+		resize_everything
+		factor = 1.0f / scaleFactor;
+		nDesiredFeaturesPerScale = nfeatures*(1 - factor)/(1 - pow(factor, nlevels));
+		do_ORB_settings
+	}
+</ORBExtractor>
+
+<ORBMatcher>
+	SearchForInitialization() {
+		TH_LOW = 50;
+		HISTO_LENGTH = 30;
+		<Frame>
+			frame.GetFeaturesInArea() {
+				knn_top_2
+				match_orientation
+			}
+		</Frame>
+	}
+</ORBMatcher>
+
+<Initializer>
+	Initialize() {
+		score_h = FindHomography();
+		score_f = FindFundamental();
+		score_r = score_h/(score_h + score_f);
+		if(score_r > 0.4)
+			return ReconstructH();
+		else 
+			return ReconstructF();
+	}
+</Initializer>
