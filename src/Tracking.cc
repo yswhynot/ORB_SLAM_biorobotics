@@ -426,7 +426,8 @@ void Tracking::Track()
                 cv::Mat LastTwc = cv::Mat::eye(4,4,CV_32F);
                 mLastFrame.GetRotationInverse().copyTo(LastTwc.rowRange(0,3).colRange(0,3));
                 mLastFrame.GetCameraCenter().copyTo(LastTwc.rowRange(0,3).col(3));
-                mVelocity = mCurrentFrame.mTcw*LastTwc;
+                // Constant velocity
+                UpdateMotionVelocity(LastTwc);
             }
             else
                 mVelocity = cv::Mat();
@@ -862,6 +863,10 @@ void Tracking::UpdateLastFrame()
         if(vDepthIdx[j].first>mThDepth && nPoints>100)
             break;
     }
+}
+
+bool Tracking::UpdateMotionVelocity(cv::Mat&) {
+    mVelocity = mCurrentFrame.mTcw * LastTwc;
 }
 
 bool Tracking::TrackWithMotionModel()
