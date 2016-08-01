@@ -130,6 +130,7 @@ protected:
     void CheckReplacedInLastFrame();
     bool TrackReferenceKeyFrame();
     void UpdateLastFrame();
+    bool UpdateMotionVelocity(cv::Mat& last_frame);
     bool TrackWithMotionModel();
 
     bool Relocalization();
