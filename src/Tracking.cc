@@ -865,7 +865,7 @@ void Tracking::UpdateLastFrame()
     }
 }
 
-bool Tracking::UpdateMotionVelocity(cv::Mat&) {
+bool Tracking::UpdateMotionVelocity(cv::Mat& LastTwc) {
     mVelocity = mCurrentFrame.mTcw * LastTwc;
 }
 
