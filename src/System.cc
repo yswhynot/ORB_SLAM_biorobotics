@@ -429,7 +429,12 @@ void System::GetKeyFramePose(float xyz[3], float quat[4]) {
     vector<KeyFrame*> vpKFs = mpMap->GetAllKeyFrames();
     sort(vpKFs.begin(), vpKFs.end(), KeyFrame::lId);
 
-    for(size_t i = (vpKFs.size() - 1); i >= 0; i--) {
+    if(vpKFs.size() <= 0)
+        return;
+
+    for(size_t i = vpKFs.size(); i >= 0;) {
+        i--;
+
         KeyFrame* pKF = vpKFs[i];
 
         if(pKF->isBad())
