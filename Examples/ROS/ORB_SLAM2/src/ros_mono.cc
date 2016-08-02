@@ -19,28 +19,31 @@
 */
 
 
-#include<iostream>
-#include<algorithm>
-#include<fstream>
-#include<chrono>
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+#include <chrono>
+#include <vector>
 
-#include<ros/ros.h>
+#include <ros/ros.h>
 #include <cv_bridge/cv_bridge.h>
+#include <geometry_msgs/PoseStamped.h>
 
-#include<opencv2/core/core.hpp>
+#include <opencv2/core/core.hpp>
 
-#include"../../../include/System.h"
+#include "../../../include/System.h"
 
 using namespace std;
 
 class ImageGrabber
 {
 public:
-    ImageGrabber(ORB_SLAM2::System* pSLAM):mpSLAM(pSLAM){}
+    ImageGrabber(ORB_SLAM2::System* pSLAM, ros::Publisher* pPub):mpSLAM(pSLAM), mPub(pPub){}
 
     void GrabImage(const sensor_msgs::ImageConstPtr& msg);
 
     ORB_SLAM2::System* mpSLAM;
+    ros::Publisher* mPub;
 };
 
 int main(int argc, char **argv)
@@ -56,12 +59,15 @@ int main(int argc, char **argv)
     }    
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    ORB_SLAM2::System SLAM(argv[1],argv[2],ORB_SLAM2::System::MONOCULAR,true);
-
-    ImageGrabber igb(&SLAM);
+    ORB_SLAM2::System SLAM(argv[1], argv[2], ORB_SLAM2::System::MONOCULAR, true);
+    
 
     ros::NodeHandle nodeHandler;
-    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage,&igb);
+    ros::Publisher pose_pub = nodeHandler.advertise<geometry_msgs::PoseStamped>("ORB_SLAM2/pose", 1);
+    
+    ImageGrabber igb(&SLAM, &pose_pub);
+    
+    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage, &igb);
 
     ros::spin();
 
@@ -91,6 +97,21 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
     }
 
     mpSLAM->TrackMonocular(cv_ptr->image,cv_ptr->header.stamp.toSec());
+
+    float xyz[3];
+    float quat[4];
+    geometry_msgs::PoseStamped ps;
+    mpSLAM->GetKeyFramePose(xyz, quat);
+
+    ps.pose.position.x = xyz[0];
+    ps.pose.position.y = xyz[1];
+    ps.pose.position.z = xyz[2];
+    ps.pose.orientation.x = quat[0];
+    ps.pose.orientation.y = quat[1];
+    ps.pose.orientation.z = quat[2];
+    ps.pose.orientation.w = quat[3];
+
+    ps.header.stamp = cv_ptr->header.stamp;
+
+    mPub->publish(ps);
 }
-
-

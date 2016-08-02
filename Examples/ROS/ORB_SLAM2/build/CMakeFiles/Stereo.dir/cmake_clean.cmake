@@ -1,10 +1,10 @@
-FILE(REMOVE_RECURSE
+file(REMOVE_RECURSE
   "CMakeFiles/Stereo.dir/src/ros_stereo.cc.o"
   "../Stereo.pdb"
   "../Stereo"
 )
 
 # Per-language clean rules from dependency scanning.
-FOREACH(lang CXX)
-  INCLUDE(CMakeFiles/Stereo.dir/cmake_clean_${lang}.cmake OPTIONAL)
-ENDFOREACH(lang)
+foreach(lang CXX)
+  include(CMakeFiles/Stereo.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

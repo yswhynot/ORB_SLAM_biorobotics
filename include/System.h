@@ -110,6 +110,8 @@ public:
     // SaveMap(const string &filename);
     // LoadMap(const string &filename);
 
+    void GetKeyFramePose(float xyz[3], float quat[4]);
+
 private:
 
     // Input sensor

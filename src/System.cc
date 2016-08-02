@@ -40,6 +40,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     "This is free software, and you are welcome to redistribute it" << endl <<
     "under certain conditions. See LICENSE.txt." << endl << endl;
 
+    cout << "Modified by Yisha :)" << endl;
+
     cout << "Input sensor was set to: ";
 
     if(mSensor==MONOCULAR)
@@ -421,6 +423,36 @@ void System::SaveTrajectoryKITTI(const string &filename)
     }
     f.close();
     cout << endl << "trajectory saved!" << endl;
+}
+
+void System::GetKeyFramePose(float xyz[3], float quat[4]) {
+    vector<KeyFrame*> vpKFs = mpMap->GetAllKeyFrames();
+    sort(vpKFs.begin(), vpKFs.end(), KeyFrame::lId);
+
+    for(size_t i=0; i<vpKFs.size(); i++)
+    {
+        KeyFrame* pKF = vpKFs[i];
+
+       // pKF->SetPose(pKF->GetPose()*Two);
+
+        if(pKF->isBad())
+            continue;
+
+        cv::Mat R = pKF->GetRotation().t();
+        vector<float> q = Converter::toQuaternion(R);
+        cv::Mat t = pKF->GetCameraCenter();
+
+        xyz[0] = t.at<float>(0);
+        xyz[1] = t.at<float>(1);
+        xyz[2] = t.at<float>(2);
+
+        for(size_t i = 0; i < q.size(); i++) 
+            quat[i] = q[i];
+
+        // f << setprecision(6) << pKF->mTimeStamp << setprecision(7) << " " << t.at<float>(0) << " " << t.at<float>(1) << " " << t.at<float>(2)
+        //   << " " << q[0] << " " << q[1] << " " << q[2] << " " << q[3] << endl;
+
+    }
 }
 
 } //namespace ORB_SLAM

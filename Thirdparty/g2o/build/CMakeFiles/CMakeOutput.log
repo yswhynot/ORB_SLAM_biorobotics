@@ -1,4 +1,4 @@
-The system is: Linux - 4.2.0-41-generic - x86_64
+The system is: Linux - 4.2.0-42-generic - x86_64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
 Compiler: /usr/bin/cc 
 Build flags: 
@@ -10,7 +10,7 @@ The output was:
 
 Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
 
-The C compiler identification is GNU, found in "/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/2.8.12.2/CompilerIdC/a.out"
+The C compiler identification is GNU, found in "/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/3.3.1/CompilerIdC/a.out"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
 Compiler: /usr/bin/c++ 
@@ -23,35 +23,33 @@ The output was:
 
 Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
 
-The CXX compiler identification is GNU, found in "/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/2.8.12.2/CompilerIdCXX/a.out"
+The CXX compiler identification is GNU, found in "/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/3.3.1/CompilerIdCXX/a.out"
 
 Determining if the C compiler works passed with the following output:
 Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec1226879602/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec1226879602.dir/build.make CMakeFiles/cmTryCompileExec1226879602.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_a338e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a338e.dir/build.make CMakeFiles/cmTC_a338e.dir/build
 make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building C object CMakeFiles/cmTryCompileExec1226879602.dir/testCCompiler.c.o
-/usr/bin/cc    -o CMakeFiles/cmTryCompileExec1226879602.dir/testCCompiler.c.o   -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTryCompileExec1226879602
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1226879602.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTryCompileExec1226879602.dir/testCCompiler.c.o  -o cmTryCompileExec1226879602 -rdynamic 
+Building C object CMakeFiles/cmTC_a338e.dir/testCCompiler.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_a338e.dir/testCCompiler.c.o   -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_a338e
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a338e.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_a338e.dir/testCCompiler.c.o  -o cmTC_a338e -rdynamic 
 make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec1216883476/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec1216883476.dir/build.make CMakeFiles/cmTryCompileExec1216883476.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_04208/fast"
+/usr/bin/make -f CMakeFiles/cmTC_04208.dir/build.make CMakeFiles/cmTC_04208.dir/build
 make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building C object CMakeFiles/cmTryCompileExec1216883476.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc    -o CMakeFiles/cmTryCompileExec1216883476.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-2.8/Modules/CMakeCCompilerABI.c
-Linking C executable cmTryCompileExec1216883476
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1216883476.dir/link.txt --verbose=1
-/usr/bin/cc     -v CMakeFiles/cmTryCompileExec1216883476.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec1216883476 -rdynamic  
+Building C object CMakeFiles/cmTC_04208.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_04208.dir/CMakeCCompilerABI.c.o   -c /home/yisha/Install/python/anaconda2/share/cmake-3.3/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_04208
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_04208.dir/link.txt --verbose=1
+/usr/bin/cc      -v CMakeFiles/cmTC_04208.dir/CMakeCCompilerABI.c.o  -o cmTC_04208 -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.8/lto-wrapper
@@ -61,8 +59,8 @@ Thread model: posix
 gcc version 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.3) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec1216883476' '-rdynamic' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/4.8/collect2 --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTryCompileExec1216883476 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. CMakeFiles/cmTryCompileExec1216883476.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_04208' '-rdynamic' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/collect2 --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_04208 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. CMakeFiles/cmTC_04208.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
 make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
 
 
@@ -70,15 +68,14 @@ Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:/usr/bin/make "cmTryCompileExec1216883476/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec1216883476.dir/build.make CMakeFiles/cmTryCompileExec1216883476.dir/build]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_04208/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_04208.dir/build.make CMakeFiles/cmTC_04208.dir/build]
   ignore line: [make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp']
-  ignore line: [/usr/bin/cmake -E cmake_progress_report /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/CMakeFiles 1]
-  ignore line: [Building C object CMakeFiles/cmTryCompileExec1216883476.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc    -o CMakeFiles/cmTryCompileExec1216883476.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-2.8/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTryCompileExec1216883476]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1216883476.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc     -v CMakeFiles/cmTryCompileExec1216883476.dir/CMakeCCompilerABI.c.o  -o cmTryCompileExec1216883476 -rdynamic  ]
+  ignore line: [Building C object CMakeFiles/cmTC_04208.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc    -o CMakeFiles/cmTC_04208.dir/CMakeCCompilerABI.c.o   -c /home/yisha/Install/python/anaconda2/share/cmake-3.3/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_04208]
+  ignore line: [/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_04208.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc      -v CMakeFiles/cmTC_04208.dir/CMakeCCompilerABI.c.o  -o cmTC_04208 -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.8/lto-wrapper]
@@ -88,8 +85,8 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.3) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec1216883476' '-rdynamic' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/4.8/collect2 --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTryCompileExec1216883476 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. CMakeFiles/cmTryCompileExec1216883476.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_04208' '-rdynamic' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/4.8/collect2 --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_04208 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. CMakeFiles/cmTC_04208.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.8/collect2] ==> ignore
     arg [--sysroot=/] ==> ignore
     arg [--build-id] ==> ignore
@@ -103,7 +100,7 @@ Parsed C implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTryCompileExec1216883476] ==> ignore
+    arg [cmTC_04208] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o] ==> ignore
@@ -115,7 +112,7 @@ Parsed C implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/4.8/../../..]
-    arg [CMakeFiles/cmTryCompileExec1216883476.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_04208.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--as-needed] ==> ignore
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -144,33 +141,91 @@ Parsed C implicit link information from above output:
   implicit fwks: []
 
 
+
+
+Detecting C [-std=c11] compiler features compiled with the following output:
+Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_e8326/fast"
+/usr/bin/make -f CMakeFiles/cmTC_e8326.dir/build.make CMakeFiles/cmTC_e8326.dir/build
+make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_e8326.dir/feature_tests.c.o
+/usr/bin/cc   -std=c11 -o CMakeFiles/cmTC_e8326.dir/feature_tests.c.o   -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_e8326
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e8326.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_e8326.dir/feature_tests.c.o  -o cmTC_e8326 -rdynamic 
+make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:1c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c99] compiler features compiled with the following output:
+Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_54eff/fast"
+/usr/bin/make -f CMakeFiles/cmTC_54eff.dir/build.make CMakeFiles/cmTC_54eff.dir/build
+make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_54eff.dir/feature_tests.c.o
+/usr/bin/cc   -std=c99 -o CMakeFiles/cmTC_54eff.dir/feature_tests.c.o   -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_54eff
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_54eff.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_54eff.dir/feature_tests.c.o  -o cmTC_54eff -rdynamic 
+make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:1c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:1c_variadic_macros
+
+
+Detecting C [-std=c90] compiler features compiled with the following output:
+Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_83207/fast"
+/usr/bin/make -f CMakeFiles/cmTC_83207.dir/build.make CMakeFiles/cmTC_83207.dir/build
+make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_83207.dir/feature_tests.c.o
+/usr/bin/cc   -std=c90 -o CMakeFiles/cmTC_83207.dir/feature_tests.c.o   -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/feature_tests.c
+Linking C executable cmTC_83207
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_83207.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_83207.dir/feature_tests.c.o  -o cmTC_83207 -rdynamic 
+make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: C_FEATURE:1c_function_prototypes
+    Feature record: C_FEATURE:0c_restrict
+    Feature record: C_FEATURE:0c_static_assert
+    Feature record: C_FEATURE:0c_variadic_macros
 Determining if the CXX compiler works passed with the following output:
 Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec562804827/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec562804827.dir/build.make CMakeFiles/cmTryCompileExec562804827.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_9a304/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9a304.dir/build.make CMakeFiles/cmTC_9a304.dir/build
 make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec562804827.dir/testCXXCompiler.cxx.o
-/usr/bin/c++     -o CMakeFiles/cmTryCompileExec562804827.dir/testCXXCompiler.cxx.o -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTryCompileExec562804827
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec562804827.dir/link.txt --verbose=1
-/usr/bin/c++        CMakeFiles/cmTryCompileExec562804827.dir/testCXXCompiler.cxx.o  -o cmTryCompileExec562804827 -rdynamic 
+Building CXX object CMakeFiles/cmTC_9a304.dir/testCXXCompiler.cxx.o
+/usr/bin/c++     -o CMakeFiles/cmTC_9a304.dir/testCXXCompiler.cxx.o -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_9a304
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9a304.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_9a304.dir/testCXXCompiler.cxx.o  -o cmTC_9a304 -rdynamic 
 make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec407753542/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec407753542.dir/build.make CMakeFiles/cmTryCompileExec407753542.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_7b81a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7b81a.dir/build.make CMakeFiles/cmTC_7b81a.dir/build
 make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec407753542.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++     -o CMakeFiles/cmTryCompileExec407753542.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTryCompileExec407753542
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec407753542.dir/link.txt --verbose=1
-/usr/bin/c++      -v CMakeFiles/cmTryCompileExec407753542.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec407753542 -rdynamic  
+Building CXX object CMakeFiles/cmTC_7b81a.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++     -o CMakeFiles/cmTC_7b81a.dir/CMakeCXXCompilerABI.cpp.o -c /home/yisha/Install/python/anaconda2/share/cmake-3.3/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_7b81a
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7b81a.dir/link.txt --verbose=1
+/usr/bin/c++       -v CMakeFiles/cmTC_7b81a.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_7b81a -rdynamic  
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.8/lto-wrapper
@@ -180,8 +235,8 @@ Thread model: posix
 gcc version 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.3) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec407753542' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/4.8/collect2 --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTryCompileExec407753542 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. CMakeFiles/cmTryCompileExec407753542.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_7b81a' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/4.8/collect2 --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_7b81a /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. CMakeFiles/cmTC_7b81a.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o
 make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
 
 
@@ -189,15 +244,14 @@ Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:/usr/bin/make "cmTryCompileExec407753542/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTryCompileExec407753542.dir/build.make CMakeFiles/cmTryCompileExec407753542.dir/build]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_7b81a/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_7b81a.dir/build.make CMakeFiles/cmTC_7b81a.dir/build]
   ignore line: [make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp']
-  ignore line: [/usr/bin/cmake -E cmake_progress_report /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/CMakeFiles 1]
-  ignore line: [Building CXX object CMakeFiles/cmTryCompileExec407753542.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTryCompileExec407753542.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-2.8/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTryCompileExec407753542]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec407753542.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++      -v CMakeFiles/cmTryCompileExec407753542.dir/CMakeCXXCompilerABI.cpp.o  -o cmTryCompileExec407753542 -rdynamic  ]
+  ignore line: [Building CXX object CMakeFiles/cmTC_7b81a.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTC_7b81a.dir/CMakeCXXCompilerABI.cpp.o -c /home/yisha/Install/python/anaconda2/share/cmake-3.3/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTC_7b81a]
+  ignore line: [/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7b81a.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++       -v CMakeFiles/cmTC_7b81a.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_7b81a -rdynamic  ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/4.8/lto-wrapper]
@@ -207,8 +261,8 @@ Parsed CXX implicit link information from above output:
   ignore line: [gcc version 4.8.4 (Ubuntu 4.8.4-2ubuntu1~14.04.3) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/4.8/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTryCompileExec407753542' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/4.8/collect2 --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTryCompileExec407753542 /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. CMakeFiles/cmTryCompileExec407753542.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_7b81a' '-rdynamic' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/4.8/collect2 --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -z relro -o cmTC_7b81a /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. CMakeFiles/cmTC_7b81a.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/4.8/crtend.o /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.8/collect2] ==> ignore
     arg [--sysroot=/] ==> ignore
     arg [--build-id] ==> ignore
@@ -222,7 +276,7 @@ Parsed CXX implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-zrelro] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTryCompileExec407753542] ==> ignore
+    arg [cmTC_7b81a] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/4.8/crtbegin.o] ==> ignore
@@ -234,7 +288,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/4.8/../../..]
-    arg [CMakeFiles/cmTryCompileExec407753542.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_7b81a.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -261,48 +315,264 @@ Parsed CXX implicit link information from above output:
   implicit fwks: []
 
 
+
+
+Detecting CXX [-std=c++1y] compiler features compiled with the following output:
+Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_bdbd9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_bdbd9.dir/build.make CMakeFiles/cmTC_bdbd9.dir/build
+make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_bdbd9.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++1y -o CMakeFiles/cmTC_bdbd9.dir/feature_tests.cxx.o -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_bdbd9
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bdbd9.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_bdbd9.dir/feature_tests.cxx.o  -o cmTC_bdbd9 -rdynamic 
+make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:0cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++11] compiler features compiled with the following output:
+Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_78d48/fast"
+/usr/bin/make -f CMakeFiles/cmTC_78d48.dir/build.make CMakeFiles/cmTC_78d48.dir/build
+make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_78d48.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++11 -o CMakeFiles/cmTC_78d48.dir/feature_tests.cxx.o -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_78d48
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_78d48.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_78d48.dir/feature_tests.cxx.o  -o cmTC_78d48 -rdynamic 
+make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:0cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+
+
+Detecting CXX [-std=c++98] compiler features compiled with the following output:
+Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_fa2aa/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fa2aa.dir/build.make CMakeFiles/cmTC_fa2aa.dir/build
+make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_fa2aa.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++98 -o CMakeFiles/cmTC_fa2aa.dir/feature_tests.cxx.o -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_fa2aa
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fa2aa.dir/link.txt --verbose=1
+/usr/bin/c++        CMakeFiles/cmTC_fa2aa.dir/feature_tests.cxx.o  -o cmTC_fa2aa -rdynamic 
+make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
+
+
+    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
+    Feature record: CXX_FEATURE:0cxx_alias_templates
+    Feature record: CXX_FEATURE:0cxx_alignas
+    Feature record: CXX_FEATURE:0cxx_alignof
+    Feature record: CXX_FEATURE:0cxx_attributes
+    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:0cxx_auto_type
+    Feature record: CXX_FEATURE:0cxx_binary_literals
+    Feature record: CXX_FEATURE:0cxx_constexpr
+    Feature record: CXX_FEATURE:0cxx_contextual_conversions
+    Feature record: CXX_FEATURE:0cxx_decltype
+    Feature record: CXX_FEATURE:0cxx_decltype_auto
+    Feature record: CXX_FEATURE:0cxx_decltype_incomplete_return_types
+    Feature record: CXX_FEATURE:0cxx_default_function_template_args
+    Feature record: CXX_FEATURE:0cxx_defaulted_functions
+    Feature record: CXX_FEATURE:0cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:0cxx_delegating_constructors
+    Feature record: CXX_FEATURE:0cxx_deleted_functions
+    Feature record: CXX_FEATURE:0cxx_digit_separators
+    Feature record: CXX_FEATURE:0cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:0cxx_explicit_conversions
+    Feature record: CXX_FEATURE:0cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:0cxx_extern_templates
+    Feature record: CXX_FEATURE:0cxx_final
+    Feature record: CXX_FEATURE:0cxx_func_identifier
+    Feature record: CXX_FEATURE:0cxx_generalized_initializers
+    Feature record: CXX_FEATURE:0cxx_generic_lambdas
+    Feature record: CXX_FEATURE:0cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:0cxx_inline_namespaces
+    Feature record: CXX_FEATURE:0cxx_lambdas
+    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:0cxx_local_type_template_args
+    Feature record: CXX_FEATURE:0cxx_long_long_type
+    Feature record: CXX_FEATURE:0cxx_noexcept
+    Feature record: CXX_FEATURE:0cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:0cxx_nullptr
+    Feature record: CXX_FEATURE:0cxx_override
+    Feature record: CXX_FEATURE:0cxx_range_for
+    Feature record: CXX_FEATURE:0cxx_raw_string_literals
+    Feature record: CXX_FEATURE:0cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
+    Feature record: CXX_FEATURE:0cxx_return_type_deduction
+    Feature record: CXX_FEATURE:0cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:0cxx_rvalue_references
+    Feature record: CXX_FEATURE:0cxx_sizeof_member
+    Feature record: CXX_FEATURE:0cxx_static_assert
+    Feature record: CXX_FEATURE:0cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:0cxx_thread_local
+    Feature record: CXX_FEATURE:0cxx_trailing_return_types
+    Feature record: CXX_FEATURE:0cxx_unicode_literals
+    Feature record: CXX_FEATURE:0cxx_uniform_initialization
+    Feature record: CXX_FEATURE:0cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:0cxx_user_literals
+    Feature record: CXX_FEATURE:0cxx_variable_templates
+    Feature record: CXX_FEATURE:0cxx_variadic_macros
+    Feature record: CXX_FEATURE:0cxx_variadic_templates
 Determining if the function sgemm_ exists passed with the following output:
 Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec251716157/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec251716157.dir/build.make CMakeFiles/cmTryCompileExec251716157.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_44bb2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_44bb2.dir/build.make CMakeFiles/cmTC_44bb2.dir/build
 make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building C object CMakeFiles/cmTryCompileExec251716157.dir/CheckFunctionExists.c.o
-/usr/bin/cc  -DBLAS_USE_F2C -DCHECK_FUNCTION_EXISTS=sgemm_   -o CMakeFiles/cmTryCompileExec251716157.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
-Linking C executable cmTryCompileExec251716157
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec251716157.dir/link.txt --verbose=1
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sgemm_    CMakeFiles/cmTryCompileExec251716157.dir/CheckFunctionExists.c.o  -o cmTryCompileExec251716157 -rdynamic -lblas 
+Building C object CMakeFiles/cmTC_44bb2.dir/CheckFunctionExists.c.o
+/usr/bin/cc  -DBLAS_USE_F2C -DCHECK_FUNCTION_EXISTS=sgemm_   -o CMakeFiles/cmTC_44bb2.dir/CheckFunctionExists.c.o   -c /home/yisha/Install/python/anaconda2/share/cmake-3.3/Modules/CheckFunctionExists.c
+Linking C executable cmTC_44bb2
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_44bb2.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sgemm_    CMakeFiles/cmTC_44bb2.dir/CheckFunctionExists.c.o  -o cmTC_44bb2 -rdynamic /usr/lib/libblas.so 
 make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
 
 
 Determining if the function cheev_ exists passed with the following output:
 Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec1660879414/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec1660879414.dir/build.make CMakeFiles/cmTryCompileExec1660879414.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_d7928/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d7928.dir/build.make CMakeFiles/cmTC_d7928.dir/build
 make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building C object CMakeFiles/cmTryCompileExec1660879414.dir/CheckFunctionExists.c.o
-/usr/bin/cc  -DLAPACK_USE_F2C -DCHECK_FUNCTION_EXISTS=cheev_   -o CMakeFiles/cmTryCompileExec1660879414.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-2.8/Modules/CheckFunctionExists.c
-Linking C executable cmTryCompileExec1660879414
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec1660879414.dir/link.txt --verbose=1
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=cheev_    CMakeFiles/cmTryCompileExec1660879414.dir/CheckFunctionExists.c.o  -o cmTryCompileExec1660879414 -rdynamic -llapack -lblas 
+Building C object CMakeFiles/cmTC_d7928.dir/CheckFunctionExists.c.o
+/usr/bin/cc  -DLAPACK_USE_F2C -DCHECK_FUNCTION_EXISTS=cheev_   -o CMakeFiles/cmTC_d7928.dir/CheckFunctionExists.c.o   -c /home/yisha/Install/python/anaconda2/share/cmake-3.3/Modules/CheckFunctionExists.c
+Linking C executable cmTC_d7928
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d7928.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=cheev_    CMakeFiles/cmTC_d7928.dir/CheckFunctionExists.c.o  -o cmTC_d7928 -rdynamic /usr/lib/liblapack.so /usr/lib/libblas.so 
 make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
 
 
 Performing C SOURCE FILE Test OpenMP_FLAG_DETECTED succeded with the following output:
 Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec2195604842/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec2195604842.dir/build.make CMakeFiles/cmTryCompileExec2195604842.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_0044a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0044a.dir/build.make CMakeFiles/cmTC_0044a.dir/build
 make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building C object CMakeFiles/cmTryCompileExec2195604842.dir/src.c.o
-/usr/bin/cc  -DLAPACK_USE_F2C -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTryCompileExec2195604842.dir/src.c.o   -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/src.c
-Linking C executable cmTryCompileExec2195604842
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2195604842.dir/link.txt --verbose=1
-/usr/bin/cc   -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTryCompileExec2195604842.dir/src.c.o  -o cmTryCompileExec2195604842 -rdynamic 
+Building C object CMakeFiles/cmTC_0044a.dir/src.c.o
+/usr/bin/cc  -DLAPACK_USE_F2C -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTC_0044a.dir/src.c.o   -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_0044a
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0044a.dir/link.txt --verbose=1
+/usr/bin/cc   -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTC_0044a.dir/src.c.o  -o cmTC_0044a -rdynamic 
 make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -319,15 +589,14 @@ int main() {
 Performing C++ SOURCE FILE Test OpenMP_FLAG_DETECTED succeded with the following output:
 Change Dir: /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp
 
-Run Build Command:/usr/bin/make "cmTryCompileExec2968303328/fast"
-/usr/bin/make -f CMakeFiles/cmTryCompileExec2968303328.dir/build.make CMakeFiles/cmTryCompileExec2968303328.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_9b271/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9b271.dir/build.make CMakeFiles/cmTC_9b271.dir/build
 make[1]: Entering directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
-/usr/bin/cmake -E cmake_progress_report /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/CMakeFiles 1
-Building CXX object CMakeFiles/cmTryCompileExec2968303328.dir/src.cxx.o
-/usr/bin/c++   -DLAPACK_USE_F2C -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTryCompileExec2968303328.dir/src.cxx.o -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTryCompileExec2968303328
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec2968303328.dir/link.txt --verbose=1
-/usr/bin/c++    -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTryCompileExec2968303328.dir/src.cxx.o  -o cmTryCompileExec2968303328 -rdynamic 
+Building CXX object CMakeFiles/cmTC_9b271.dir/src.cxx.o
+/usr/bin/c++   -DLAPACK_USE_F2C -DOpenMP_FLAG_DETECTED -fopenmp   -o CMakeFiles/cmTC_9b271.dir/src.cxx.o -c /home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_9b271
+/home/yisha/Install/python/anaconda2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9b271.dir/link.txt --verbose=1
+/usr/bin/c++    -DOpenMP_FLAG_DETECTED -fopenmp    CMakeFiles/cmTC_9b271.dir/src.cxx.o  -o cmTC_9b271 -rdynamic 
 make[1]: Leaving directory `/home/yisha/Workspace/VO/ORB_SLAM2/Thirdparty/g2o/build/CMakeFiles/CMakeTmp'
 
 Source file was:

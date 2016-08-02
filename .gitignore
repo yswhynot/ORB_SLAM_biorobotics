@@ -2,6 +2,9 @@ lib/*
 Vocabulary/*
 build/*
 */build/*
+/Examples/ROS/ORB_SLAM2/Mono
+/Examples/ROS/ORB_SLAM2/Stereo
+/Examples/ROS/ORB_SLAM2/RGBD
 
 # Prerequisites
 *.d
