@@ -432,11 +432,6 @@ void System::GetKeyFramePose(float xyz[3], float quat[4]) {
     size_t i = vpKFs.size() - 1;
     KeyFrame* pKF = vpKFs[i];
 
-   // pKF->SetPose(pKF->GetPose()*Two);
-
-    if(pKF->isBad())
-        continue;
-
     cv::Mat R = pKF->GetRotation().t();
     vector<float> q = Converter::toQuaternion(R);
     cv::Mat t = pKF->GetCameraCenter();
