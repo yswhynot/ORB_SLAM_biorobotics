@@ -443,8 +443,8 @@ void System::GetKeyFramePose(float xyz[3], float quat[4]) {
         xyz[1] = t.at<float>(1);
         xyz[2] = t.at<float>(2);
 
-        for(size_t i = 0; i < q.size(); i++) 
-            quat[i] = q[i];
+        for(size_t j = 0; j < q.size(); j++) 
+            quat[j] = q[j];
 
         break;
     }
