@@ -429,30 +429,25 @@ void System::GetKeyFramePose(float xyz[3], float quat[4]) {
     vector<KeyFrame*> vpKFs = mpMap->GetAllKeyFrames();
     sort(vpKFs.begin(), vpKFs.end(), KeyFrame::lId);
 
-    for(size_t i=0; i<vpKFs.size(); i++)
-    {
-        KeyFrame* pKF = vpKFs[i];
+    size_t i = vpKFs.size() - 1;
+    KeyFrame* pKF = vpKFs[i];
 
-       // pKF->SetPose(pKF->GetPose()*Two);
+   // pKF->SetPose(pKF->GetPose()*Two);
 
-        if(pKF->isBad())
-            continue;
+    if(pKF->isBad())
+        continue;
 
-        cv::Mat R = pKF->GetRotation().t();
-        vector<float> q = Converter::toQuaternion(R);
-        cv::Mat t = pKF->GetCameraCenter();
+    cv::Mat R = pKF->GetRotation().t();
+    vector<float> q = Converter::toQuaternion(R);
+    cv::Mat t = pKF->GetCameraCenter();
 
-        xyz[0] = t.at<float>(0);
-        xyz[1] = t.at<float>(1);
-        xyz[2] = t.at<float>(2);
+    xyz[0] = t.at<float>(0);
+    xyz[1] = t.at<float>(1);
+    xyz[2] = t.at<float>(2);
 
-        for(size_t i = 0; i < q.size(); i++) 
-            quat[i] = q[i];
+    for(size_t i = 0; i < q.size(); i++) 
+        quat[i] = q[i];
 
-        // f << setprecision(6) << pKF->mTimeStamp << setprecision(7) << " " << t.at<float>(0) << " " << t.at<float>(1) << " " << t.at<float>(2)
-        //   << " " << q[0] << " " << q[1] << " " << q[2] << " " << q[3] << endl;
-
-    }
 }
 
 } //namespace ORB_SLAM
