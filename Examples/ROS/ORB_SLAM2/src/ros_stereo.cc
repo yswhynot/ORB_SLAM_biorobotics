@@ -19,33 +19,35 @@
 */
 
 
-#include<iostream>
-#include<algorithm>
-#include<fstream>
-#include<chrono>
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+#include <chrono>
 
-#include<ros/ros.h>
+#include <ros/ros.h>
 #include <cv_bridge/cv_bridge.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <message_filters/subscriber.h>
 #include <message_filters/time_synchronizer.h>
 #include <message_filters/sync_policies/approximate_time.h>
 
-#include<opencv2/core/core.hpp>
+#include <opencv2/core/core.hpp>
 
-#include"../../../include/System.h"
+#include "../../../include/System.h"
 
 using namespace std;
 
 class ImageGrabber
 {
 public:
-    ImageGrabber(ORB_SLAM2::System* pSLAM):mpSLAM(pSLAM){}
+    ImageGrabber(ORB_SLAM2::System* pSLAM, ros::Publisher* pPub):mpSLAM(pSLAM), mPub(pPub){}
 
     void GrabStereo(const sensor_msgs::ImageConstPtr& msgLeft,const sensor_msgs::ImageConstPtr& msgRight);
 
     ORB_SLAM2::System* mpSLAM;
     bool do_rectify;
     cv::Mat M1l,M2l,M1r,M2r;
+    ros::Publisher* mPub;
 };
 
 int main(int argc, char **argv)
@@ -62,11 +64,14 @@ int main(int argc, char **argv)
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
     ORB_SLAM2::System SLAM(argv[1],argv[2],ORB_SLAM2::System::STEREO,true);
+    ros::NodeHandle nh;
 
-    ImageGrabber igb(&SLAM);
+    ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseStamped>("ORB_SLAM2/pose", 1);
+
+    ImageGrabber igb(&SLAM, &pose_pub);
 
     stringstream ss(argv[3]);
-	ss >> boolalpha >> igb.do_rectify;
+    ss >> boolalpha >> igb.do_rectify;
 
     if(igb.do_rectify)
     {      
@@ -107,7 +112,6 @@ int main(int argc, char **argv)
         cv::initUndistortRectifyMap(K_r,D_r,R_r,P_r.rowRange(0,3).colRange(0,3),cv::Size(cols_r,rows_r),CV_32F,igb.M1r,igb.M2r);
     }
 
-    ros::NodeHandle nh;
 
     message_filters::Subscriber<sensor_msgs::Image> left_sub(nh, "/camera/left/image_raw", 1);
     message_filters::Subscriber<sensor_msgs::Image> right_sub(nh, "camera/right/image_raw", 1);
@@ -166,6 +170,23 @@ void ImageGrabber::GrabStereo(const sensor_msgs::ImageConstPtr& msgLeft,const se
     {
         mpSLAM->TrackStereo(cv_ptrLeft->image,cv_ptrRight->image,cv_ptrLeft->header.stamp.toSec());
     }
+
+    float xyz[3];
+    float quat[4];
+    geometry_msgs::PoseStamped ps;
+    mpSLAM->GetKeyFramePose(xyz, quat);
+
+    ps.pose.position.x = xyz[0];
+    ps.pose.position.y = xyz[1];
+    ps.pose.position.z = xyz[2];
+    ps.pose.orientation.x = quat[0];
+    ps.pose.orientation.y = quat[1];
+    ps.pose.orientation.z = quat[2];
+    ps.pose.orientation.w = quat[3];
+
+    ps.header.stamp = cv_ptrLeft->header.stamp;
+
+    mPub->publish(ps);
 
 }
 
