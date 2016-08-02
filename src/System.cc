@@ -429,20 +429,25 @@ void System::GetKeyFramePose(float xyz[3], float quat[4]) {
     vector<KeyFrame*> vpKFs = mpMap->GetAllKeyFrames();
     sort(vpKFs.begin(), vpKFs.end(), KeyFrame::lId);
 
-    size_t i = vpKFs.size() - 1;
-    KeyFrame* pKF = vpKFs[i];
+    for(size_t i = (vpKFs.size() - 1); i >= 0; i--) {
+        KeyFrame* pKF = vpKFs[i];
 
-    cv::Mat R = pKF->GetRotation().t();
-    vector<float> q = Converter::toQuaternion(R);
-    cv::Mat t = pKF->GetCameraCenter();
+        if(pKF->isBad())
+            continue;
 
-    xyz[0] = t.at<float>(0);
-    xyz[1] = t.at<float>(1);
-    xyz[2] = t.at<float>(2);
+        cv::Mat R = pKF->GetRotation().t();
+        vector<float> q = Converter::toQuaternion(R);
+        cv::Mat t = pKF->GetCameraCenter();
 
-    for(size_t i = 0; i < q.size(); i++) 
-        quat[i] = q[i];
+        xyz[0] = t.at<float>(0);
+        xyz[1] = t.at<float>(1);
+        xyz[2] = t.at<float>(2);
 
+        for(size_t i = 0; i < q.size(); i++) 
+            quat[i] = q[i];
+
+        break;
+    }
 }
 
 } //namespace ORB_SLAM
