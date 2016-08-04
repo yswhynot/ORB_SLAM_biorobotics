@@ -249,6 +249,10 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
     return mpTracker->GrabImageMonocular(im,timestamp);
 }
 
+bool System::UpdateVelocityWithTwist(cv::Mat& twc) {
+    return mpTracker->UpdateVelocityWithRt(twc);
+}
+
 void System::ActivateLocalizationMode()
 {
     unique_lock<mutex> lock(mMutexMode);

@@ -74,6 +74,7 @@ public:
     // Use this function if you have deactivated local mapping and you only want to localize the camera.
     void InformOnlyTracking(const bool &flag);
 
+    bool UpdateVelocityWithRt(cv::Mat& twc);
 
 public:
 
@@ -130,7 +131,6 @@ protected:
     void CheckReplacedInLastFrame();
     bool TrackReferenceKeyFrame();
     void UpdateLastFrame();
-    bool UpdateVelocityWithTwist(cv::Mat& twc);
     bool UpdateMotionVelocity(cv::Mat& last_frame);
     bool TrackWithMotionModel();
 
