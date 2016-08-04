@@ -865,9 +865,15 @@ void Tracking::UpdateLastFrame()
     }
 }
 
+bool Tracking::UpdateVelocityWithTwist(cv::Mat& twc) {
+    mVelocity = mCurrentFrame.mTcw * twc;
+    return true;
+}
+
 bool Tracking::UpdateMotionVelocity(cv::Mat& LastTwc) {
     mVelocity = mCurrentFrame.mTcw * LastTwc;
 
+    cout << "LastTwc:\n" << LastTwc << endl;
     return true;
 }
 

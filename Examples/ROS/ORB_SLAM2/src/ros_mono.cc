@@ -28,12 +28,16 @@
 #include <ros/ros.h>
 #include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/Twist.h>
 
 #include <opencv2/core/core.hpp>
+#include <Eigen>
 
 #include "../../../include/System.h"
 
 using namespace std;
+
+const float FREQUENCY = 10;
 
 class ImageGrabber
 {
@@ -45,6 +49,15 @@ public:
     ORB_SLAM2::System* mpSLAM;
     ros::Publisher* mPub;
 };
+
+class TwistGrabber {
+public:
+    TwistGrabber(ORB_SLAM2::System* pSLAM):mpSLAM(pSLAM) {}
+
+    void GrabTwist(const geometry_msgs::Twist& input_twist);
+
+    ORB_SLAM2::System* mpSLAM;
+}
 
 int main(int argc, char **argv)
 {
@@ -66,8 +79,11 @@ int main(int argc, char **argv)
     ros::Publisher pose_pub = nodeHandler.advertise<geometry_msgs::PoseStamped>("ORB_SLAM2/pose", 1);
     
     ImageGrabber igb(&SLAM, &pose_pub);
+    TwistGrabber tgb(&SLAM);
     
-    ros::Subscriber sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage, &igb);
+    ros::Subscriber img_sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage, &igb);
+    ros::Subscriber twist_sub = nodeHandler.subscribe("/twist", 1, &TwistGrabber::GrabTwist, &tgb);
+
 
     ros::spin();
 
@@ -114,4 +130,24 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
     ps.header.stamp = cv_ptr->header.stamp;
 
     mPub->publish(ps);
+}
+
+void TwistGrabber::GrabTwist(geometry_msgs::Twist& input_twist) {
+    geometry_msgs::Twist m_twist = *input_twist;
+
+    cv::Mat t_linear = cv::Mat::zeros(3, 1, CV_32F);
+    cv::Mat t_ang = cv::Mat::eye(3, 3, CV_32F);
+
+    t_linear.at<float>(0, 0) = m_twist->linear.x / FREQUENCY;
+    t_linear.at<float>(1, 0) = m_twist->linear.y / FREQUENCY;
+    t_linear.at<float>(2, 0) = m_twist->linear.z / FREQUENCY;
+
+    // angular (x, y, z) = (r, p, y)
+    Eigen::AngleAxisd rollAngle(m_twist->angular.x, Eigen::Vector3d::UnitZ());
+    Eigen::AngleAxisd pitchAngle(m_twist->angular.y, Eigen::Vector3d::UnitX());
+    Eigen::AngleAxisd yawAngle(m_twist->angular.z, Eigen::Vector3d::UnitY());
+
+    Eigen::Quaternion<double> q = rollAngle * yawAngle * pitchAngle;
+
+    Eigen::Matrix3d rotationMatrix = q.matrix();
 }
