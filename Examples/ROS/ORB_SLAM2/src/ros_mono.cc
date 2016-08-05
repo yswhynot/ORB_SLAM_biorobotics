@@ -54,11 +54,30 @@ public:
 
 class TwistGrabber {
 public:
-    TwistGrabber(ORB_SLAM2::System* pSLAM):mpSLAM(pSLAM) {}
+    TwistGrabber(ORB_SLAM2::System* pSLAM):mpSLAM(pSLAM) {
+
+        // Camera - robot translation
+        Rbc = cv::Mat::zeros(3, 3, CV_32F);
+        pbc = cv::Mat::zeros(3, 1, CV_32F);
+        Rbc.at<float>(0, 0) = -1;
+        Rbc.at<float>(1, 2) = -1;
+        Rbc.at<float>(2, 1) = -1;
+        pbc.at<float>(1, 0) = -0.1;
+        pbc.at<float>(2, 0) = 0.2;
+
+        // Calculate adjust transformation
+        computeAdjointTransform();
+    }
 
     void GrabTwist(const geometry_msgs::Twist::ConstPtr& input_twist);
+    void computeAdjointTransform();
+    void TwistVelocityTo4x4Transform(cv::Mat& vw, cv::Mat& output);
+    void TwistToVec(const geometry_msgs::Twist::ConstPtr& input_twist, cv::Mat& output);
 
     ORB_SLAM2::System* mpSLAM;
+    cv::Mat Rbc;
+    cv::Mat pbc;
+    cv::Mat Adg;
 };
 
 int main(int argc, char **argv)
@@ -84,7 +103,7 @@ int main(int argc, char **argv)
     TwistGrabber tgb(&SLAM);
     
     ros::Subscriber img_sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage, &igb);
-    ros::Subscriber twist_sub = nodeHandler.subscribe("/twist", 1, &TwistGrabber::GrabTwist, &tgb);
+    ros::Subscriber twist_sub = nodeHandler.subscribe("/cmd_vel", 1, &TwistGrabber::GrabTwist, &tgb);
 
 
     ros::spin();
@@ -135,28 +154,81 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
 }
 
 void TwistGrabber::GrabTwist(const geometry_msgs::Twist::ConstPtr& input_twist) {
+    cv::Mat twist_vec;
+    TwistToVec(input_twist, twist_vec);
+
+    cv::Mat Rt_vec = Adg * twist_vec;
+    cv::Mat Rt;
+    TwistVelocityTo4x4Transform(Rt_vec, Rt);
+
+    cout << "Rt: " << Rt << endl;
+
+    mpSLAM->UpdateVelocityWithTwist(Rt);
+}
+
+void TwistGrabber::TwistVelocityTo4x4Transform(cv::Mat& vw, cv::Mat& output) {
+    cv::Mat mR = cv::Mat::zeros(3, 3, CV_32F);
+    cv::Mat mt = cv::Mat::zeros(3, 1, CV_32F);
+
+    vw = vw / FREQUENCY;
+
+    // Construct translation vector
+    mt.at<float>(0, 0) = vw.at<float>(0, 0);
+    mt.at<float>(1, 0) = vw.at<float>(1, 0);
+    mt.at<float>(2, 0) = vw.at<float>(2, 0);
+
+    // Construct rotation matrix: angular (x, y, z) = (r, p, y)
+    Eigen::AngleAxisf rollAngle(vw.at<float>(3, 0), Eigen::Vector3f::UnitX());
+    Eigen::AngleAxisf pitchAngle(vw.at<float>(4, 0), Eigen::Vector3f::UnitY());
+    Eigen::AngleAxisf yawAngle(vw.at<float>(5, 0), Eigen::Vector3f::UnitZ());
+
+    Eigen::Quaternion<float> q = rollAngle * yawAngle * pitchAngle;
+    Eigen::Matrix3f rotationMatrix = q.matrix();
+
+    cv::eigen2cv(rotationMatrix, mR);
+
+    cv::Mat Rt = cv::Mat::eye(4, 4, CV_32F);
+
+    mR.copyTo(Rt.rowRange(0,3).colRange(0,3));
+    mt.copyTo(Rt.rowRange(0,3).col(3));
+
+    output = Rt;
+}
+
+void TwistGrabber::TwistToVec(const geometry_msgs::Twist::ConstPtr& input_twist, cv::Mat& output) {
     geometry_msgs::Twist m_twist = *input_twist;
 
-    cv::Mat t_linear = cv::Mat::zeros(3, 1, CV_32F);
-    cv::Mat t_ang = cv::Mat::eye(3, 3, CV_32F);
+    cv::Mat t_vw = cv::Mat::zeros(6, 1, CV_32F);
 
-    t_linear.at<float>(0, 0) = m_twist.linear.x / FREQUENCY;
-    t_linear.at<float>(1, 0) = m_twist.linear.y / FREQUENCY;
-    t_linear.at<float>(2, 0) = m_twist.linear.z / FREQUENCY;
+    t_vw.at<float>(0, 0) = (float)m_twist.linear.x;
+    t_vw.at<float>(1, 0) = (float)m_twist.linear.y;
+    t_vw.at<float>(2, 0) = (float)m_twist.linear.z;
+    t_vw.at<float>(3, 0) = (float)m_twist.angular.x;
+    t_vw.at<float>(4, 0) = (float)m_twist.angular.y;
+    t_vw.at<float>(5, 0) = (float)m_twist.angular.z;
+    
+    output = t_vw;
+}
 
-    // angular (x, y, z) = (r, p, y)
-    Eigen::AngleAxisd rollAngle(m_twist.angular.x, Eigen::Vector3d::UnitZ());
-    Eigen::AngleAxisd pitchAngle(m_twist.angular.y, Eigen::Vector3d::UnitX());
-    Eigen::AngleAxisd yawAngle(m_twist.angular.z, Eigen::Vector3d::UnitY());
+void TwistGrabber::computeAdjointTransform() {
+    Adg = cv::Mat::zeros(6, 6, CV_32F);
+    cv::Mat p_x = cv::Mat::zeros(3, 3, CV_32F);
 
-    Eigen::Quaternion<double> q = rollAngle * yawAngle * pitchAngle;
-    Eigen::Matrix3d rotationMatrix = q.matrix();
+    float w1 = pbc.at<float>(0, 0);
+    float w2 = pbc.at<float>(1, 0);
+    float w3 = pbc.at<float>(2, 0);
 
-    cv::eigen2cv(rotationMatrix, t_ang);
+    p_x.at<float>(0, 1) = - w3;
+    p_x.at<float>(0, 2) = w2;
+    p_x.at<float>(1, 0) = w3;
+    p_x.at<float>(1, 2) = - w1;
+    p_x.at<float>(2, 0) = - w2;
+    p_x.at<float>(2, 1) = w1;
 
-    cv::Mat twc = cv::Mat::eye(4, 4, CV_32F);
-    t_ang.copyTo(twc.rowRange(0,3).colRange(0,3));
-    t_linear.copyTo(twc.rowRange(0,3).col(3));
+    cv::Mat pR = p_x * Rbc;
 
-    mpSLAM->UpdateVelocityWithTwist(twc);
+    Rbc.copyTo(Adg.rowRange(0, 3).colRange(0, 3));  
+    pR.copyTo(Adg.rowRange(0, 3).colRange(3, 6));
+    Rbc.copyTo(Adg.rowRange(3, 6).colRange(3, 6));  
+
 }

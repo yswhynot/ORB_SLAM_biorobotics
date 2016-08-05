@@ -866,13 +866,16 @@ void Tracking::UpdateLastFrame()
 }
 
 bool Tracking::UpdateVelocityWithRt(cv::Mat& twc) {
-    mVelocity = mCurrentFrame.mTcw * twc;
+    mVelocity = twc;
+    
     return true;
 }
 
 bool Tracking::UpdateMotionVelocity(cv::Mat& LastTwc) {
     // mVelocity = mCurrentFrame.mTcw * LastTwc;
 
+    // cout << "origin v: " << mVelocity << endl;
+    // cout << "origin v type: " << mVelocity.type() << endl;
     // cout << "LastTwc:\n" << LastTwc << endl;
     return true;
 }
