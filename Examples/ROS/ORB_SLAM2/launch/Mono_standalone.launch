@@ -1,0 +1,10 @@
+<launch>
+		<node pkg="ORB_SLAM2" type="Mono" name="mono" output="screen">
+			<param name="cam_topic" type="string" value="/camera/image_raw" />
+			<param name="save_file" type="string" value="SavedPose/standalone.txt" />
+			<param name="pose_topic" type="string" value="/ORB_SLAM2/pose" />
+			<param name="vocab_path" type="string" value="/home/yisha/Workspace/VO/ORB_SLAM2/Vocabulary/ORBvoc.txt" />
+			<param name="setting_path" type="string" value="/home/yisha/Workspace/VO/ORB_SLAM2/Examples/Monocular/TUM1.yaml" />
+		</node>
+
+</launch>

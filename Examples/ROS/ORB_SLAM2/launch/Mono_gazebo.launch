@@ -1,0 +1,20 @@
+<launch>
+	<group ns="ORB_SLAM">  
+		<node pkg="ORB_SLAM2" type="Mono" name="mono_left" output="screen">
+			<param name="cam_topic" type="string" value="/multicambot/camera_left0/image_raw" />
+			<param name="save_file" type="string" value="SavedPose/Gazebo_left0.txt" />
+			<param name="pose_topic" type="string" value="/multicambot/camera_left0/pose" />
+			<param name="vocab_path" type="string" value="/home/yisha/Workspace/VO/ORB_SLAM2/Vocabulary/ORBvoc.txt" />
+			<param name="setting_path" type="string" value="/home/yisha/Workspace/VO/ORB_SLAM2/Examples/Monocular/TUM1.yaml" />
+		</node>
+
+		<node pkg="ORB_SLAM2" type="Mono" name="mono_right" output="screen">
+			<param name="cam_topic" type="string" value="/multicambot/camera_right0/image_raw" />
+			<param name="save_file" type="string" value="SavedPose/Gazebo_right0.txt" />
+			<param name="pose_topic" type="string" value="/multicambot/camera_right0/pose" />
+			<param name="vocab_path" type="string" value="/home/yisha/Workspace/VO/ORB_SLAM2/Vocabulary/ORBvoc.txt" />
+			<param name="setting_path" type="string" value="/home/yisha/Workspace/VO/ORB_SLAM2/Examples/Monocular/TUM1.yaml" />
+		</node>
+
+	</group>
+</launch>
