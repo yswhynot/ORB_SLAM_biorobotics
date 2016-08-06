@@ -66,25 +66,37 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "Mono");
     ros::start();
 
-    if(argc != 3)
-    {
-        cerr << endl << "Usage: rosrun ORB_SLAM2 Mono path_to_vocabulary path_to_settings" << endl;        
-        ros::shutdown();
-        return 1;
-    }    
+    // if(argc != 3)
+    // {
+    //     cerr << endl << "Usage: rosrun ORB_SLAM2 Mono path_to_vocabulary path_to_settings" << endl;        
+    //     ros::shutdown();
+    //     return 1;
+    // }    
 
     // Create SLAM system. It initializes all system threads and gets ready to process frames.
-    ORB_SLAM2::System SLAM(argv[1], argv[2], ORB_SLAM2::System::MONOCULAR, true);
-    
 
-    ros::NodeHandle nodeHandler;
-    ros::Publisher pose_pub = nodeHandler.advertise<geometry_msgs::PoseStamped>("ORB_SLAM2/pose", 1);
+    ros::NodeHandle nh;
+    ros::NodeHandle _nh("~");
+
+    cout << endl << "after nh" << endl;
+	
+	// Get params from launch 
+	string cam_topic, save_file, pose_topic, vocab_path, setting_path;
+	if(!_nh.getParam("cam_topic", cam_topic) || !_nh.getParam("save_file", save_file) ||
+        !_nh.getParam("pose_topic", pose_topic) || !_nh.getParam("vocab_path", vocab_path) ||
+        !_nh.getParam("vocab_path", vocab_path) || !_nh.getParam("setting_path", setting_path)) {
+       cerr << "\n\nwrong\n";
+    }
     
+    ORB_SLAM2::System SLAM(vocab_path, setting_path, ORB_SLAM2::System::MONOCULAR, true);
+    
+	ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseStamped>(pose_topic, 1);
+
     ImageGrabber igb(&SLAM, &pose_pub);
     TwistGrabber tgb(&SLAM);
     
-    ros::Subscriber img_sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage, &igb);
-    ros::Subscriber twist_sub = nodeHandler.subscribe("/twist", 1, &TwistGrabber::GrabTwist, &tgb);
+    ros::Subscriber img_sub = nh.subscribe(cam_topic, 1, &ImageGrabber::GrabImage, &igb);
+    ros::Subscriber twist_sub = nh.subscribe("/twist", 1, &TwistGrabber::GrabTwist, &tgb);
 
 
     ros::spin();
@@ -93,7 +105,7 @@ int main(int argc, char **argv)
     SLAM.Shutdown();
 
     // Save camera trajectory
-    SLAM.SaveKeyFrameTrajectoryTUM("KeyFrameTrajectory.txt");
+    SLAM.SaveKeyFrameTrajectoryTUM(save_file);
 
     ros::shutdown();
 
