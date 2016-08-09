@@ -71,6 +71,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
         cerr << "Falied to open at: " << strVocFile << endl;
         exit(-1);
     }
+
     cout << "Vocabulary loaded!" << endl << endl;
 
     //Create KeyFrame Database
@@ -457,6 +458,10 @@ void System::GetKeyFramePose(float xyz[3], float quat[4]) {
 
         break;
     }
+}
+
+bool System::IsInitFinished() {
+    return mpTracker->IsInitFinished();
 }
 
 } //namespace ORB_SLAM

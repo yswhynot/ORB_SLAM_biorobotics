@@ -76,6 +76,8 @@ public:
 
     bool UpdateVelocityWithRt(cv::Mat& twc);
 
+    bool IsInitFinished() {return isInit;}
+
 public:
 
     // Tracking states
@@ -216,6 +218,9 @@ protected:
     bool mbRGB;
 
     list<MapPoint*> mlpTemporalPoints;
+
+    // flag for initialization
+    bool isInit;
 };
 
 } //namespace ORB_SLAM

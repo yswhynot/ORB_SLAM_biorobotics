@@ -29,6 +29,7 @@
 #include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Twist.h>
+#include <std_msgs/Bool.h>
 
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
@@ -44,12 +45,13 @@ const float FREQUENCY = 10;
 class ImageGrabber
 {
 public:
-    ImageGrabber(ORB_SLAM2::System* pSLAM, ros::Publisher* pPub):mpSLAM(pSLAM), mPub(pPub){}
+    ImageGrabber(ORB_SLAM2::System* pSLAM, ros::Publisher* pPosePub, ros::Publisher* pInitPub):mpSLAM(pSLAM), pose_pub(pPosePub), init_pub(pInitPub) {}
 
     void GrabImage(const sensor_msgs::ImageConstPtr& msg);
 
     ORB_SLAM2::System* mpSLAM;
-    ros::Publisher* mPub;
+    ros::Publisher* pose_pub;
+    ros::Publisher* init_pub;
 };
 
 class TwistGrabber {
@@ -91,8 +93,9 @@ int main(int argc, char **argv)
     ORB_SLAM2::System SLAM(vocab_path, setting_path, ORB_SLAM2::System::MONOCULAR, true);
     
 	ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseStamped>(pose_topic, 1);
+    ros::Publisher init_state_pub = nh.advertise<std_msgs::Bool>("/ORB_SLAM2/init_state", 1);
 
-    ImageGrabber igb(&SLAM, &pose_pub);
+    ImageGrabber igb(&SLAM, &pose_pub, &init_state_pub);
     TwistGrabber tgb(&SLAM);
     
     ros::Subscriber img_sub = nh.subscribe(cam_topic, 1, &ImageGrabber::GrabImage, &igb);
@@ -128,6 +131,7 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
 
     mpSLAM->TrackMonocular(cv_ptr->image,cv_ptr->header.stamp.toSec());
 
+    // Publish Pose 
     float xyz[3];
     float quat[4];
     geometry_msgs::PoseStamped ps;
@@ -143,7 +147,11 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
 
     ps.header.stamp = cv_ptr->header.stamp;
 
-    mPub->publish(ps);
+    pose_pub->publish(ps);
+
+    // Get init state
+    init_pub->publish(mpSLAM->IsInitFinished());
+
 }
 
 void TwistGrabber::GrabTwist(const geometry_msgs::Twist::ConstPtr& input_twist) {

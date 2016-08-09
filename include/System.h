@@ -114,6 +114,8 @@ public:
 
     void GetKeyFramePose(float xyz[3], float quat[4]);
 
+    bool IsInitFinished();
+
 private:
 
     // Input sensor
