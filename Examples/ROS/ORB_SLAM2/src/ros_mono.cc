@@ -59,11 +59,11 @@ public:
         // Camera - robot translation
         Rbc = cv::Mat::zeros(3, 3, CV_32F);
         pbc = cv::Mat::zeros(3, 1, CV_32F);
-        Rbc.at<float>(0, 0) = -1;
+        Rbc.at<float>(0, 0) = 1;
         Rbc.at<float>(1, 2) = -1;
         Rbc.at<float>(2, 1) = -1;
-        pbc.at<float>(1, 0) = -0.1;
-        pbc.at<float>(2, 0) = 0.2;
+        pbc.at<float>(1, 0) = -0.2286;
+        pbc.at<float>(2, 0) = 0.3;
 
         // Calculate adjust transformation
         computeAdjointTransform();
@@ -78,6 +78,12 @@ public:
     cv::Mat Rbc;
     cv::Mat pbc;
     cv::Mat Adg;
+};
+
+class LidarPoseGrabber {
+public:
+    LidarPoseGrabber(ORB_SLAM2::System* pSLAM) : mpSLAM(pSLAM) {}
+    void GrabLidarPose(const geometry_msgs::PoseStamped::ConstPtr& input_pose);
 };
 
 int main(int argc, char **argv)
@@ -101,10 +107,11 @@ int main(int argc, char **argv)
     
     ImageGrabber igb(&SLAM, &pose_pub);
     TwistGrabber tgb(&SLAM);
+    LidarPoseGrabber lpgb(&SLAM);
     
     ros::Subscriber img_sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage, &igb);
     ros::Subscriber twist_sub = nodeHandler.subscribe("/cmd_vel", 1, &TwistGrabber::GrabTwist, &tgb);
-
+    ros::Subscriber pose_sub = nodeHandler.subscribe("/stencil/pose", 1, &LidarPoseGrabber::GrabLidarPose, &lpgb);
 
     ros::spin();
 
@@ -161,9 +168,9 @@ void TwistGrabber::GrabTwist(const geometry_msgs::Twist::ConstPtr& input_twist) 
     cv::Mat Rt;
     TwistVelocityTo4x4Transform(Rt_vec, Rt);
 
-    cout << "Rt: " << Rt << endl;
+    // cout << "Rt: \n" << Rt << endl;
 
-    mpSLAM->UpdateVelocityWithTwist(Rt);
+    // mpSLAM->UpdateVelocityWithTwist(Rt);
 }
 
 void TwistGrabber::TwistVelocityTo4x4Transform(cv::Mat& vw, cv::Mat& output) {
@@ -230,5 +237,15 @@ void TwistGrabber::computeAdjointTransform() {
     Rbc.copyTo(Adg.rowRange(0, 3).colRange(0, 3));  
     pR.copyTo(Adg.rowRange(0, 3).colRange(3, 6));
     Rbc.copyTo(Adg.rowRange(3, 6).colRange(3, 6));  
+
+}
+
+void LidarPoseGrabber::GrabLidarPose(const geometry_msgs::PoseStamped::ConstPtr& input_pose) {
+    geometry_msgs::PoseStamped pose = *input_pose;
+
+    cv::Mat rotation = Mat::eye(3, 3, CV_32F);
+    cv::Mat translation = Mat::zeros(3, 1, CV_32F);
+
+    rotation.at<float>(0, 0) = 
 
 }
