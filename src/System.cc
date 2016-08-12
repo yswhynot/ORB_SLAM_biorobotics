@@ -73,6 +73,10 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     }
     cout << "Vocabulary loaded!" << endl << endl;
 
+    // Initialize LIDAR variables
+    lidar_rotation = cv::Mat::eye(3, 3, CV_32F);
+    lidar_translation = cv::Mat::zeros(3, 1, CV_32F);
+
     //Create KeyFrame Database
     mpKeyFrameDatabase = new KeyFrameDatabase(*mpVocabulary);
 
@@ -457,6 +461,11 @@ void System::GetKeyFramePose(float xyz[3], float quat[4]) {
 
         break;
     }
+}
+
+void System::SetLidarPose(cv::Mat& R, cv::Mat& t) {
+    lidar_rotation = R;
+    lidar_translation = t;
 }
 
 } //namespace ORB_SLAM

@@ -41,6 +41,9 @@ public:
     // Selects a model and tries to recover the motion and the structure from motion
     bool Initialize(const Frame &CurrentFrame, const vector<int> &vMatches12,
                     cv::Mat &R21, cv::Mat &t21, vector<cv::Point3f> &vP3D, vector<bool> &vbTriangulated);
+    
+    bool InitializeWithLidar(const Frame &CurrentFrame, const vector<int> &vMatches12,
+                    cv::Mat &R21, cv::Mat &t21, vector<cv::Point3f> &vP3D, vector<bool> &vbTriangulated);
 
 
 private:

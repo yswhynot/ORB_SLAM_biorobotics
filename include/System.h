@@ -22,9 +22,9 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-#include<string>
-#include<thread>
-#include<opencv2/core/core.hpp>
+#include <string>
+#include <thread>
+#include <opencv2/core/core.hpp>
 
 #include "Tracking.h"
 #include "FrameDrawer.h"
@@ -114,6 +114,9 @@ public:
 
     void GetKeyFramePose(float xyz[3], float quat[4]);
 
+    // Set the LIDAR Pose
+    void SetLidarPose(cv::Mat& R, cv::Mat& t);
+
 private:
 
     // Input sensor
@@ -160,6 +163,11 @@ private:
     std::mutex mMutexMode;
     bool mbActivateLocalizationMode;
     bool mbDeactivateLocalizationMode;
+
+    //LIDAR related variables
+    cv::Mat lidar_rotation;
+    cv::Mat lidar_translation;
+
 };
 
 }// namespace ORB_SLAM

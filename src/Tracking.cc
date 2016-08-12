@@ -21,21 +21,21 @@
 
 #include "Tracking.h"
 
-#include<opencv2/core/core.hpp>
-#include<opencv2/features2d/features2d.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/features2d/features2d.hpp>
 
-#include"ORBmatcher.h"
-#include"FrameDrawer.h"
-#include"Converter.h"
-#include"Map.h"
-#include"Initializer.h"
+#include "ORBmatcher.h"
+#include "FrameDrawer.h"
+#include "Converter.h"
+#include "Map.h"
+#include "Initializer.h"
 
-#include"Optimizer.h"
-#include"PnPsolver.h"
+#include "Optimizer.h"
+#include "PnPsolver.h"
 
-#include<iostream>
+#include <iostream>
 
-#include<mutex>
+#include <mutex>
 
 
 using namespace std;
@@ -235,7 +235,7 @@ cv::Mat Tracking::GrabImageRGBD(const cv::Mat &imRGB,const cv::Mat &imD, const d
 }
 
 
-cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp)
+cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp, cv::Mat& rotation, cv::Mat& translation)
 {
     mImGray = im;
 
@@ -258,6 +258,10 @@ cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp)
         mCurrentFrame = Frame(mImGray,timestamp,mpIniORBextractor,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
     else
         mCurrentFrame = Frame(mImGray,timestamp,mpORBextractorLeft,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
+
+    // Set LIDAR rotation and translation
+    lidar_rotation = rotation;
+    lidar_translation = translation;
 
     Track();
 
@@ -608,11 +612,38 @@ void Tracking::MonocularInitialization()
             return;
         }
 
-        cv::Mat Rcw; // Current Camera Rotation
-        cv::Mat tcw; // Current Camera Translation
+        // cv::Mat Rcw; // Current Camera Rotation
+        // cv::Mat tcw; // Current Camera Translation
+        // vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
+
+        // if(mpInitializer->Initialize(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
+        // {
+        //     for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
+        //     {
+        //         if(mvIniMatches[i]>=0 && !vbTriangulated[i])
+        //         {
+        //             mvIniMatches[i]=-1;
+        //             nmatches--;
+        //         }
+        //     }
+
+        //     // Set Frame Poses
+        //     mInitialFrame.SetPose(cv::Mat::eye(4,4,CV_32F));
+            
+        //     cv::Mat Tcw = cv::Mat::eye(4,4,CV_32F);
+        //     Rcw.copyTo(Tcw.rowRange(0,3).colRange(0,3));
+        //     tcw.copyTo(Tcw.rowRange(0,3).col(3));
+        //     mCurrentFrame.SetPose(Tcw);
+
+        //     CreateInitialMapMonocular();
+        // }
+
+        // LIDAR version
+        cv::Mat Rcw = lidar_rotation; // Current Camera Rotation
+        cv::Mat tcw = lidar_translation; // Current Camera Translation
         vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
 
-        if(mpInitializer->Initialize(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
+        if(mpInitializer->InitializeWithLidar(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
         {
             for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
             {
@@ -638,8 +669,8 @@ void Tracking::MonocularInitialization()
 void Tracking::CreateInitialMapMonocular()
 {
     // Create KeyFrames
-    KeyFrame* pKFini = new KeyFrame(mInitialFrame,mpMap,mpKeyFrameDB);
-    KeyFrame* pKFcur = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
+    KeyFrame* pKFini = new KeyFrame(mInitialFrame, mpMap, mpKeyFrameDB);
+    KeyFrame* pKFcur = new KeyFrame(mCurrentFrame, mpMap, mpKeyFrameDB);
 
 
     pKFini->ComputeBoW();

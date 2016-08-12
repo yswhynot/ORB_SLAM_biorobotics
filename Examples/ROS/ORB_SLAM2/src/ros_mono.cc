@@ -84,6 +84,8 @@ class LidarPoseGrabber {
 public:
     LidarPoseGrabber(ORB_SLAM2::System* pSLAM) : mpSLAM(pSLAM) {}
     void GrabLidarPose(const geometry_msgs::PoseStamped::ConstPtr& input_pose);
+
+    ORB_SLAM2::System* mpSLAM;
 };
 
 int main(int argc, char **argv)
@@ -243,9 +245,16 @@ void TwistGrabber::computeAdjointTransform() {
 void LidarPoseGrabber::GrabLidarPose(const geometry_msgs::PoseStamped::ConstPtr& input_pose) {
     geometry_msgs::PoseStamped pose = *input_pose;
 
-    cv::Mat rotation = Mat::eye(3, 3, CV_32F);
-    cv::Mat translation = Mat::zeros(3, 1, CV_32F);
+    Eigen::Quaternion<float> q(pose.pose.orientation.w, pose.pose.orientation.x, pose.pose.orientation.y, pose.pose.orientation.z);
+    Eigen::Matrix3f q_f = q.matrix();
 
-    rotation.at<float>(0, 0) = 
+    cv::Mat t = cv::Mat::zeros(3, 1, CV_32F);
+    t.at<float>(0, 0) = pose.pose.position.x;
+    t.at<float>(1, 0) = pose.pose.position.y;
+    t.at<float>(2, 0) = pose.pose.position.z;
 
+    cv::Mat R;
+    cv::eigen2cv(q_f, R);
+
+    mpSLAM->SetLidarPose(R, t);
 }
