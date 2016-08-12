@@ -30,6 +30,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Twist.h>
 #include <std_msgs/Bool.h>
+#include <std_msgs/Int64.h>
 
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
@@ -45,13 +46,14 @@ const float FREQUENCY = 10;
 class ImageGrabber
 {
 public:
-    ImageGrabber(ORB_SLAM2::System* pSLAM, ros::Publisher* pPosePub, ros::Publisher* pInitPub):mpSLAM(pSLAM), pose_pub(pPosePub), init_pub(pInitPub) {}
+    ImageGrabber(ORB_SLAM2::System* pSLAM, ros::Publisher* pPosePub, ros::Publisher* pInitPub, ros::Publisher* pKFNum) : mpSLAM(pSLAM), pose_pub(pPosePub), init_pub(pInitPub), kf_num_pub(pKFNum) {}
 
     void GrabImage(const sensor_msgs::ImageConstPtr& msg);
 
     ORB_SLAM2::System* mpSLAM;
     ros::Publisher* pose_pub;
     ros::Publisher* init_pub;
+    ros::Publisher* kf_num_pub;
 };
 
 class TwistGrabber {
@@ -85,8 +87,8 @@ int main(int argc, char **argv)
 	// Get params from launch 
 	string cam_topic, save_file, pose_topic, vocab_path, setting_path;
 	if(!_nh.getParam("cam_topic", cam_topic) || !_nh.getParam("save_file", save_file) ||
-        !_nh.getParam("pose_topic", pose_topic) || !_nh.getParam("vocab_path", vocab_path) ||
-        !_nh.getParam("vocab_path", vocab_path) || !_nh.getParam("setting_path", setting_path)) {
+        !_nh.getParam("pose_topic", pose_topic) || !_nh.getParam("vocab_path", vocab_path) 
+        || !_nh.getParam("setting_path", setting_path)) {
        cerr << "\n\nwrong\n";
     }
     
@@ -94,8 +96,9 @@ int main(int argc, char **argv)
     
 	ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseStamped>(pose_topic, 1);
     ros::Publisher init_state_pub = nh.advertise<std_msgs::Bool>("/ORB_SLAM2/init_state", 1);
+    ros::Publisher keyframe_num_pub = nh.advertise<std_msgs::Int64>("/ORB_SLAM2/keyframe_num", 1);
 
-    ImageGrabber igb(&SLAM, &pose_pub, &init_state_pub);
+    ImageGrabber igb(&SLAM, &pose_pub, &init_state_pub, &keyframe_num_pub);
     TwistGrabber tgb(&SLAM);
     
     ros::Subscriber img_sub = nh.subscribe(cam_topic, 1, &ImageGrabber::GrabImage, &igb);
@@ -151,6 +154,11 @@ void ImageGrabber::GrabImage(const sensor_msgs::ImageConstPtr& msg)
 
     // Get init state
     init_pub->publish(mpSLAM->IsInitFinished());
+
+    // Publish keyframe number
+    std_msgs::Int64 kf_num;
+    kf_num.data = mpSLAM->GetKeyFrameNumber();
+    kf_num_pub->publish(kf_num);
 
 }
 

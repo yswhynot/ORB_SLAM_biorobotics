@@ -116,6 +116,8 @@ public:
 
     bool IsInitFinished();
 
+    long int GetKeyFrameNumber() {return mpMap->GetKeyFrameNumber();}
+
 private:
 
     // Input sensor
@@ -162,6 +164,7 @@ private:
     std::mutex mMutexMode;
     bool mbActivateLocalizationMode;
     bool mbDeactivateLocalizationMode;
+
 };
 
 }// namespace ORB_SLAM

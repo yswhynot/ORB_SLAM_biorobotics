@@ -221,6 +221,7 @@ protected:
 
     // flag for initialization
     bool isInit;
+
 };
 
 } //namespace ORB_SLAM

@@ -64,6 +64,8 @@ public:
     // This avoid that two points are created simultaneously in separate threads (id conflict)
     std::mutex mMutexPointCreation;
 
+    long int GetKeyFrameNumber() {return mKeyFrameNum;}
+
 protected:
     std::set<MapPoint*> mspMapPoints;
     std::set<KeyFrame*> mspKeyFrames;
@@ -73,6 +75,8 @@ protected:
     long unsigned int mnMaxKFid;
 
     std::mutex mMutexMap;
+
+    long int mKeyFrameNum;
 };
 
 } //namespace ORB_SLAM

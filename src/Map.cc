@@ -25,7 +25,7 @@
 namespace ORB_SLAM2
 {
 
-Map::Map():mnMaxKFid(0)
+Map::Map():mnMaxKFid(0), mKeyFrameNum(0)
 {
 }
 
@@ -35,6 +35,8 @@ void Map::AddKeyFrame(KeyFrame *pKF)
     mspKeyFrames.insert(pKF);
     if(pKF->mnId>mnMaxKFid)
         mnMaxKFid=pKF->mnId;
+
+    mKeyFrameNum ++;
 }
 
 void Map::AddMapPoint(MapPoint *pMP)

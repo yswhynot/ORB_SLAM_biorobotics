@@ -254,10 +254,14 @@ cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp)
             cvtColor(mImGray,mImGray,CV_BGRA2GRAY);
     }
 
-    if(mState==NOT_INITIALIZED || mState==NO_IMAGES_YET)
+    if(mState==NOT_INITIALIZED || mState==NO_IMAGES_YET) {
         mCurrentFrame = Frame(mImGray,timestamp,mpIniORBextractor,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
-    else
+        isInit = false;
+    }
+    else {
         mCurrentFrame = Frame(mImGray,timestamp,mpORBextractorLeft,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
+        isInit = true;
+    }
 
     Track();
 
@@ -641,7 +645,6 @@ void Tracking::CreateInitialMapMonocular()
     KeyFrame* pKFini = new KeyFrame(mInitialFrame,mpMap,mpKeyFrameDB);
     KeyFrame* pKFcur = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
 
-
     pKFini->ComputeBoW();
     pKFcur->ComputeBoW();
 
@@ -697,6 +700,7 @@ void Tracking::CreateInitialMapMonocular()
     {
         cout << "Wrong initialization, reseting..." << endl;
         Reset();
+        isInit = false;
         return;
     }
 

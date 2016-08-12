@@ -464,4 +464,5 @@ bool System::IsInitFinished() {
     return mpTracker->IsInitFinished();
 }
 
+
 } //namespace ORB_SLAM
