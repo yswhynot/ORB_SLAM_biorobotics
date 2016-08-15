@@ -250,7 +250,7 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
     }
     }
 
-    return mpTracker->GrabImageMonocular(im,timestamp);
+    return mpTracker->GrabImageMonocular(im, timestamp, lidar_rotation, lidar_translation);
 }
 
 bool System::UpdateVelocityWithTwist(cv::Mat& twc) {
@@ -463,7 +463,7 @@ void System::GetKeyFramePose(float xyz[3], float quat[4]) {
     }
 }
 
-void System::SetLidarPose(cv::Mat& R, cv::Mat& t) {
+void System::SetLidarCamPose(cv::Mat& R, cv::Mat& t) {
     lidar_rotation = R;
     lidar_translation = t;
 }

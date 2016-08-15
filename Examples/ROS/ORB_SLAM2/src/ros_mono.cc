@@ -29,9 +29,11 @@
 #include <cv_bridge/cv_bridge.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Twist.h>
+#include <nav_msgs/Odometry.h>
 
 #include <Eigen/Dense>
 #include <Eigen/Geometry>
+#include <Eigen/LU>
 #include <opencv2/core/core.hpp>
 #include <opencv2/core/eigen.hpp>
 
@@ -82,10 +84,17 @@ public:
 
 class LidarPoseGrabber {
 public:
-    LidarPoseGrabber(ORB_SLAM2::System* pSLAM) : mpSLAM(pSLAM) {}
-    void GrabLidarPose(const geometry_msgs::PoseStamped::ConstPtr& input_pose);
+    LidarPoseGrabber(ORB_SLAM2::System* pSLAM) : mpSLAM(pSLAM) {
+        gcl << -1, 0, 0, -0.4445,
+                0, 0, -1, 0.3683,
+                0, -1, 0, -0.2667,
+                0, 0, 0, 1;
+
+    }
+    void GrabLidarPose(const nav_msgs::Odometry::ConstPtr& input_pose);
 
     ORB_SLAM2::System* mpSLAM;
+    Eigen::Matrix4f gcl;
 };
 
 int main(int argc, char **argv)
@@ -113,7 +122,7 @@ int main(int argc, char **argv)
     
     ros::Subscriber img_sub = nodeHandler.subscribe("/camera/image_raw", 1, &ImageGrabber::GrabImage, &igb);
     ros::Subscriber twist_sub = nodeHandler.subscribe("/cmd_vel", 1, &TwistGrabber::GrabTwist, &tgb);
-    ros::Subscriber pose_sub = nodeHandler.subscribe("/stencil/pose", 1, &LidarPoseGrabber::GrabLidarPose, &lpgb);
+    ros::Subscriber pose_sub = nodeHandler.subscribe("/integrated_to_init", 1, &LidarPoseGrabber::GrabLidarPose, &lpgb);
 
     ros::spin();
 
@@ -242,19 +251,28 @@ void TwistGrabber::computeAdjointTransform() {
 
 }
 
-void LidarPoseGrabber::GrabLidarPose(const geometry_msgs::PoseStamped::ConstPtr& input_pose) {
-    geometry_msgs::PoseStamped pose = *input_pose;
+void LidarPoseGrabber::GrabLidarPose(const nav_msgs::Odometry::ConstPtr& input_odometry) {
+    nav_msgs::Odometry odometry = *input_odometry;
+    geometry_msgs::PoseWithCovariance pose = odometry.pose;
+
+    cout << "Lidar Pose:\n" << pose.pose << endl;
 
     Eigen::Quaternion<float> q(pose.pose.orientation.w, pose.pose.orientation.x, pose.pose.orientation.y, pose.pose.orientation.z);
-    Eigen::Matrix3f q_f = q.matrix();
+    Eigen::Matrix3f lidar_R = q.matrix();
+    Eigen::Vector3f lidar_t;
+    lidar_t << pose.pose.position.x, pose.pose.position.y, pose.pose.position.z;
 
-    cv::Mat t = cv::Mat::zeros(3, 1, CV_32F);
-    t.at<float>(0, 0) = pose.pose.position.x;
-    t.at<float>(1, 0) = pose.pose.position.y;
-    t.at<float>(2, 0) = pose.pose.position.z;
+    Eigen::Matrix4f gl0l;
+    gl0l.block<3, 3>(0, 0) = lidar_R;
+    gl0l.block<3, 1>(0, 3) = lidar_t;
+    gl0l.block<1, 3>(3, 0).setZero();
+    gl0l(3, 3) = 1;
 
-    cv::Mat R;
-    cv::eigen2cv(q_f, R);
+    Eigen::Matrix4f gc0c = gcl * gl0l * gcl.inverse();
 
-    mpSLAM->SetLidarPose(R, t);
+    cv::Mat R, t;
+    cv::eigen2cv(gc0c.block<3, 3>(0, 0), R);
+    cv::eigen2cv(gc0c.block<3, 1>(0, 3), t);
+
+    mpSLAM->SetLidarCamPose(R, t);
 }

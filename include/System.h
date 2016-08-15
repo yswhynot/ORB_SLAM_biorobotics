@@ -115,7 +115,7 @@ public:
     void GetKeyFramePose(float xyz[3], float quat[4]);
 
     // Set the LIDAR Pose
-    void SetLidarPose(cv::Mat& R, cv::Mat& t);
+    void SetLidarCamPose(cv::Mat& R, cv::Mat& t);
 
 private:
 

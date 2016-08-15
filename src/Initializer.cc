@@ -152,7 +152,7 @@ bool Initializer::InitializeWithLidar(const Frame &CurrentFrame, const vector<in
     int good_np = CheckRT(R21, t21, mvKeys1, mvKeys2, mvMatches12, vbMatchesInliers, mK, vP3D_tmp, 4.0*mSigma2, vbTriangulated_tmp, parallax_tmp);
 
     std::cout << "Inliers: " << good_np << std::endl;
-    std::cout << "parallax: " << parallax << std::endl;
+    std::cout << "parallax: " << parallax_tmp << std::endl;
 
     vP3D = vP3D_tmp;
     vbTriangulated = vbTriangulated_tmp;
