@@ -635,6 +635,8 @@ void Tracking::MonocularInitialization()
         //     tcw.copyTo(Tcw.rowRange(0,3).col(3));
         //     mCurrentFrame.SetPose(Tcw);
 
+        //     cout << "Tcw:\n" << Tcw << endl;
+
         //     CreateInitialMapMonocular();
         // }
 
@@ -906,7 +908,7 @@ bool Tracking::UpdateMotionVelocity(cv::Mat& LastTwc) {
     // cv::Mat mtest_Velocity = mCurrentFrame.mTcw * LastTwc;
     mVelocity = mCurrentFrame.mTcw * LastTwc;
 
-    // cout << "test v: \n" << mtest_Velocity << endl;
+    cout << "mVelocity: \n" << mVelocity << endl;
     return true;
 }
 

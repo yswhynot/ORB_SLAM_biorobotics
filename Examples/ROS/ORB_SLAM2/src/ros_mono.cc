@@ -85,9 +85,9 @@ public:
 class LidarPoseGrabber {
 public:
     LidarPoseGrabber(ORB_SLAM2::System* pSLAM) : mpSLAM(pSLAM) {
-        gcl << -1, 0, 0, -0.4445,
-                0, 0, -1, 0.3683,
-                0, -1, 0, -0.2667,
+        gcl << 1, 0, 0, 0.4445,
+                0, 0, -1, -0.3683,
+                0, 1, 0, -0.2667,
                 0, 0, 0, 1;
 
     }
@@ -270,9 +270,10 @@ void LidarPoseGrabber::GrabLidarPose(const nav_msgs::Odometry::ConstPtr& input_o
 
     Eigen::Matrix4f gc0c = gcl * gl0l * gcl.inverse();
 
-    cv::Mat R, t;
-    cv::eigen2cv(gc0c.block<3, 3>(0, 0), R);
-    cv::eigen2cv(gc0c.block<3, 1>(0, 3), t);
+    cout << "Cam pose:\n" << gc0c << endl;
 
-    mpSLAM->SetLidarCamPose(R, t);
+    cv::Mat Rt;
+    cv::eigen2cv(gc0c, Rt);
+
+    mpSLAM->SetLidarCamPose(Rt);
 }

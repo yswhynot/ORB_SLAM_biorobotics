@@ -463,7 +463,13 @@ void System::GetKeyFramePose(float xyz[3], float quat[4]) {
     }
 }
 
-void System::SetLidarCamPose(cv::Mat& R, cv::Mat& t) {
+void System::SetLidarCamPose(cv::Mat& Rt) {
+
+    cv::Mat R = cv::Mat::eye(3, 3, CV_32F);
+    cv::Mat t = cv::Mat::zeros(3, 1, CV_32F);
+    Rt.rowRange(0, 3).colRange(0, 3).copyTo(R);
+    Rt.rowRange(0, 3).colRange(3, 4).copyTo(t);
+
     lidar_rotation = R;
     lidar_translation = t;
 }
