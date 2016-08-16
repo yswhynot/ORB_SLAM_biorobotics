@@ -74,8 +74,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
     cout << "Vocabulary loaded!" << endl << endl;
 
     // Initialize LIDAR variables
-    lidar_rotation = cv::Mat::eye(3, 3, CV_32F);
-    lidar_translation = cv::Mat::zeros(3, 1, CV_32F);
+    mLidarRotation = cv::Mat::eye(3, 3, CV_32F);
+    mLidarTranslation = cv::Mat::zeros(3, 1, CV_32F);
 
     //Create KeyFrame Database
     mpKeyFrameDatabase = new KeyFrameDatabase(*mpVocabulary);
@@ -250,7 +250,7 @@ cv::Mat System::TrackMonocular(const cv::Mat &im, const double &timestamp)
     }
     }
 
-    return mpTracker->GrabImageMonocular(im, timestamp, lidar_rotation, lidar_translation);
+    return mpTracker->GrabImageMonocular(im, timestamp, mLidarRotation, mLidarTranslation);
 }
 
 bool System::UpdateVelocityWithTwist(cv::Mat& twc) {
@@ -470,8 +470,8 @@ void System::SetLidarCamPose(cv::Mat& Rt) {
     Rt.rowRange(0, 3).colRange(0, 3).copyTo(R);
     Rt.rowRange(0, 3).colRange(3, 4).copyTo(t);
 
-    lidar_rotation = R;
-    lidar_translation = t;
+    mLidarRotation = R;
+    mLidarTranslation = t;
 }
 
 } //namespace ORB_SLAM

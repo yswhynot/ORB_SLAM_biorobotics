@@ -165,8 +165,8 @@ private:
     bool mbDeactivateLocalizationMode;
 
     //LIDAR related variables
-    cv::Mat lidar_rotation;
-    cv::Mat lidar_translation;
+    cv::Mat mLidarRotation;
+    cv::Mat mLidarTranslation;
 
 };
 

@@ -46,7 +46,7 @@ namespace ORB_SLAM2
 Tracking::Tracking(System *pSys, ORBVocabulary* pVoc, FrameDrawer *pFrameDrawer, MapDrawer *pMapDrawer, Map *pMap, KeyFrameDatabase* pKFDB, const string &strSettingPath, const int sensor):
     mState(NO_IMAGES_YET), mSensor(sensor), mbOnlyTracking(false), mbVO(false), mpORBVocabulary(pVoc),
     mpKeyFrameDB(pKFDB), mpInitializer(static_cast<Initializer*>(NULL)), mpSystem(pSys),
-    mpFrameDrawer(pFrameDrawer), mpMapDrawer(pMapDrawer), mpMap(pMap), mnLastRelocFrameId(0)
+    mpFrameDrawer(pFrameDrawer), mpMapDrawer(pMapDrawer), mpMap(pMap), mnLastRelocFrameId(0), mMapBuilt(false)
 {
     // Load camera parameters from settings file
 
@@ -641,8 +641,8 @@ void Tracking::MonocularInitialization()
         // }
 
         // LIDAR version
-        cv::Mat Rcw = lidar_rotation; // Current Camera Rotation
-        cv::Mat tcw = lidar_translation; // Current Camera Translation
+        cv::Mat Rcw = mLidarRotation; // Current Camera Rotation
+        cv::Mat tcw = mLidarTranslation; // Current Camera Translation
         vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
 
         if(mpInitializer->InitializeWithLidar(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))

@@ -218,8 +218,11 @@ protected:
     list<MapPoint*> mlpTemporalPoints;
 
     // LIDAR variable
-    cv::Mat lidar_rotation;
-    cv::Mat lidar_translation;
+    cv::Mat mLidarRotation;
+    cv::Mat mLidarTranslation;
+
+    // Mapping variable
+    bool mMapBuilt;
 
 };
 
