@@ -170,6 +170,35 @@ public:
   double fx, fy, cx, cy;
 };
 
+// class  EdgeSE3ProjectXYZOnlyMapPoints: public  BaseUnaryEdge<2, Vector2d, VertexSBAPointXYZ>{
+// public:
+//   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+//   EdgeSE3ProjectXYZOnlyMapPoints(){}
+
+//   bool read(std::istream& is);
+
+//   bool write(std::ostream& os) const;
+
+//   void computeError()  {
+//     const VertexSBAPointXYZ* v1 = static_cast<const VertexSBAPointXYZ*>(_vertices[0]);
+//     Vector2d obs(_measurement);
+//     _error = obs-cam_project(v1->estimate().map(Xw));
+//   }
+
+//   bool isDepthPositive() {
+//     const VertexSBAPointXYZ* v1 = static_cast<const VertexSBAPointXYZ*>(_vertices[0]);
+//     return (v1->estimate().map(Xw))(2)>0.0;
+//   }
+
+
+//   virtual void linearizeOplus();
+
+//   Vector2d cam_project(const Vector3d & trans_xyz) const;
+
+//   double fx, fy, cx, cy;
+// };
+
 
 class  EdgeStereoSE3ProjectXYZOnlyPose: public  BaseUnaryEdge<3, Vector3d, VertexSE3Expmap>{
 public:
