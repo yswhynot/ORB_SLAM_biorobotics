@@ -38,7 +38,7 @@ namespace ORB_SLAM2
 LoopClosing::LoopClosing(Map *pMap, KeyFrameDatabase *pDB, ORBVocabulary *pVoc, const bool bFixScale):
     mbResetRequested(false), mbFinishRequested(false), mbFinished(true), mpMap(pMap),
     mpKeyFrameDB(pDB), mpORBVocabulary(pVoc), mLastLoopKFid(0), mbRunningGBA(false), mbFinishedGBA(true),
-    mbStopGBA(false), mbFixScale(bFixScale)
+    mbStopGBA(false), mbFixScale(bFixScale), mMapBuilt(false)
 {
     mnCovisibilityConsistencyTh = 3;
     mpMatchedKF = NULL;
@@ -644,7 +644,11 @@ void LoopClosing::RunGlobalBundleAdjustment(unsigned long nLoopKF)
 {
     cout << "Starting Global Bundle Adjustment" << endl;
 
-    Optimizer::GlobalBundleAdjustemnt(mpMap,20,&mbStopGBA,nLoopKF,false);
+    if(mMapBuilt)
+        Optimizer::GlobalBundleAdjustemnt(mpMap, 20, &mbStopGBA, nLoopKF, false);
+    else {
+        Optimizer::MapPointsOptimization(mpMap, 20, &mbStopGBA, nLoopKF, false);
+    }
 
     // Update all MapPoints and KeyFrames
     // Local Mapping was active during BA, that means that there might be new keyframes
@@ -656,7 +660,13 @@ void LoopClosing::RunGlobalBundleAdjustment(unsigned long nLoopKF)
 
         if(!mbStopGBA)
         {
-            cout << "Global Bundle Adjustment finished" << endl;
+            if(!mMapBuilt) {
+                cout << "Map Points Initialization finished" << endl;
+                mMapBuilt = true;
+            } else {
+                cout << "Global Bundle Adjustment finished" << endl;
+            }
+
             cout << "Updating map ..." << endl;
             mpLocalMapper->RequestStop();
             // Wait until Local Mapping has effectively stopped

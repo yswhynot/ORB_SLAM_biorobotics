@@ -80,6 +80,8 @@ public:
 
     bool isFinished();
 
+    bool isMapBuiltFinished() { return mMapBuilt; }
+
 protected:
 
     bool CheckNewKeyFrames();
@@ -139,6 +141,9 @@ protected:
 
     // Fix scale in the stereo/RGB-D case
     bool mbFixScale;
+
+    // Lidar Mappping 
+    bool mMapBuilt;
 };
 
 } //namespace ORB_SLAM

@@ -134,6 +134,8 @@ protected:
     bool UpdateMotionVelocity(cv::Mat& last_frame);
     bool TrackWithMotionModel();
 
+    bool TrackingWithLidarPose();
+
     bool Relocalization();
 
     void UpdateLocalMap();
@@ -220,6 +222,7 @@ protected:
     // LIDAR variable
     cv::Mat mLidarRotation;
     cv::Mat mLidarTranslation;
+    cv::Mat mLidarRt;
 
     // Mapping variable
     bool mMapBuilt;

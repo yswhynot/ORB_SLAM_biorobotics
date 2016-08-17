@@ -20,22 +20,24 @@
 
 #include "ORBmatcher.h"
 
-#include<limits.h>
+#include <limits.h>
 
-#include<opencv2/core/core.hpp>
-#include<opencv2/features2d/features2d.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/features2d/features2d.hpp>
 
 #include "Thirdparty/DBoW2/DBoW2/FeatureVector.h"
 
-#include<stdint-gcc.h>
+#include <stdint-gcc.h>
 
 using namespace std;
 
 namespace ORB_SLAM2
 {
 
-const int ORBmatcher::TH_HIGH = 100;
+// const int ORBmatcher::TH_HIGH = 100;
+const int ORBmatcher::TH_HIGH = 120;
 const int ORBmatcher::TH_LOW = 50;
+// const int ORBmatcher::TH_LOW = 30;
 const int ORBmatcher::HISTO_LENGTH = 30;
 
 ORBmatcher::ORBmatcher(float nnratio, bool checkOri): mfNNratio(nnratio), mbCheckOrientation(checkOri)
@@ -1348,7 +1350,11 @@ int ORBmatcher::SearchByProjection(Frame &CurrentFrame, const Frame &LastFrame, 
     const bool bForward = tlc.at<float>(2)>CurrentFrame.mb && !bMono;
     const bool bBackward = -tlc.at<float>(2)>CurrentFrame.mb && !bMono;
 
-    for(int i=0; i<LastFrame.N; i++)
+    unsigned int count_inlier = 0;
+    unsigned int count_proj = 0;
+    unsigned int count_vIndices = 0;
+
+    for(int i = 0; i < LastFrame.N; i++)
     {
         MapPoint* pMP = LastFrame.mvpMapPoints[i];
 
@@ -1356,6 +1362,7 @@ int ORBmatcher::SearchByProjection(Frame &CurrentFrame, const Frame &LastFrame, 
         {
             if(!LastFrame.mvbOutlier[i])
             {
+                count_inlier++;
                 // Project
                 cv::Mat x3Dw = pMP->GetWorldPos();
                 cv::Mat x3Dc = Rcw*x3Dw+tcw;
@@ -1367,13 +1374,15 @@ int ORBmatcher::SearchByProjection(Frame &CurrentFrame, const Frame &LastFrame, 
                 if(invzc<0)
                     continue;
 
-                float u = CurrentFrame.fx*xc*invzc+CurrentFrame.cx;
-                float v = CurrentFrame.fy*yc*invzc+CurrentFrame.cy;
+                float u = CurrentFrame.fx*xc*invzc + CurrentFrame.cx;
+                float v = CurrentFrame.fy*yc*invzc + CurrentFrame.cy;
 
                 if(u<CurrentFrame.mnMinX || u>CurrentFrame.mnMaxX)
                     continue;
                 if(v<CurrentFrame.mnMinY || v>CurrentFrame.mnMaxY)
                     continue;
+
+                count_proj++;
 
                 int nLastOctave = LastFrame.mvKeys[i].octave;
 
@@ -1391,6 +1400,7 @@ int ORBmatcher::SearchByProjection(Frame &CurrentFrame, const Frame &LastFrame, 
 
                 if(vIndices2.empty())
                     continue;
+                count_vIndices++;
 
                 const cv::Mat dMP = pMP->GetDescriptor();
 
@@ -1443,6 +1453,11 @@ int ORBmatcher::SearchByProjection(Frame &CurrentFrame, const Frame &LastFrame, 
             }
         }
     }
+
+    cout << "count_inlier: " << count_inlier << endl;
+    cout << "count_proj: " << count_proj << endl;
+    cout << "count_vIndices: " << count_vIndices << endl;
+    cout << "nmatches before orientation: " << nmatches << endl;
 
     //Apply rotation consistency
     if(mbCheckOrientation)

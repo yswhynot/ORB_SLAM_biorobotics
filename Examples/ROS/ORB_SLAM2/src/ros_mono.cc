@@ -255,7 +255,7 @@ void LidarPoseGrabber::GrabLidarPose(const nav_msgs::Odometry::ConstPtr& input_o
     nav_msgs::Odometry odometry = *input_odometry;
     geometry_msgs::PoseWithCovariance pose = odometry.pose;
 
-    cout << "Lidar Pose:\n" << pose.pose << endl;
+    // cout << "Lidar Pose:\n" << pose.pose << endl;
 
     Eigen::Quaternion<float> q(pose.pose.orientation.w, pose.pose.orientation.x, pose.pose.orientation.y, pose.pose.orientation.z);
     Eigen::Matrix3f lidar_R = q.matrix();
@@ -268,9 +268,10 @@ void LidarPoseGrabber::GrabLidarPose(const nav_msgs::Odometry::ConstPtr& input_o
     gl0l.block<1, 3>(3, 0).setZero();
     gl0l(3, 3) = 1;
 
+    // cout << "Cam pose translation:\n" << lidar_t << endl;
+
     Eigen::Matrix4f gc0c = gcl * gl0l * gcl.inverse();
 
-    cout << "Cam pose:\n" << gc0c << endl;
 
     cv::Mat Rt;
     cv::eigen2cv(gc0c, Rt);

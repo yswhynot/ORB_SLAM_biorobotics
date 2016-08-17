@@ -146,6 +146,8 @@ Tracking::Tracking(System *pSys, ORBVocabulary* pVoc, FrameDrawer *pFrameDrawer,
             mDepthMapFactor = 1.0f/mDepthMapFactor;
     }
 
+    mLidarRt = cv::Mat::eye(4, 4, CV_32F);
+
 }
 
 void Tracking::SetLocalMapper(LocalMapping *pLocalMapper)
@@ -155,7 +157,9 @@ void Tracking::SetLocalMapper(LocalMapping *pLocalMapper)
 
 void Tracking::SetLoopClosing(LoopClosing *pLoopClosing)
 {
-    mpLoopClosing=pLoopClosing;
+    mpLoopClosing = pLoopClosing;
+    mMapBuilt = pLoopClosing->isMapBuiltFinished();
+    cout << "In tracking: map built finished!" << endl << endl;
 }
 
 void Tracking::SetViewer(Viewer *pViewer)
@@ -262,6 +266,8 @@ cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp,
     // Set LIDAR rotation and translation
     mLidarRotation = rotation;
     mLidarTranslation = translation;
+    mLidarRotation.copyTo(mLidarRt.rowRange(0, 3).colRange(0, 3));
+    mLidarTranslation.copyTo(mLidarRt.rowRange(0, 3).col(3)); 
 
     Track();
 
@@ -308,15 +314,22 @@ void Tracking::Track()
                 // Local Mapping might have changed some MapPoints tracked in last frame
                 CheckReplacedInLastFrame();
 
-                if(mVelocity.empty() || mCurrentFrame.mnId<mnLastRelocFrameId+2)
-                {
-                    bOK = TrackReferenceKeyFrame();
-                }
-                else
-                {
-                    bOK = TrackWithMotionModel();
-                    if(!bOK)
+                if(mMapBuilt) {
+                    if(mVelocity.empty() || mCurrentFrame.mnId<mnLastRelocFrameId+2)
+                    {
                         bOK = TrackReferenceKeyFrame();
+                    }
+                    else
+                    {
+                        bOK = TrackWithMotionModel();
+                        if(!bOK)
+                            bOK = TrackReferenceKeyFrame();
+                    }
+                } else {
+                    if(mVelocity.empty())
+                        bOK = TrackReferenceKeyFrame();
+                    else
+                        bOK = TrackingWithLidarPose();
                 }
             }
             else
@@ -415,8 +428,10 @@ void Tracking::Track()
 
         if(bOK)
             mState = OK;
-        else
+        else {
+            cout << "State lost" << endl;
             mState=LOST;
+        }
 
         // Update drawer
         mpFrameDrawer->Update(this);
@@ -473,6 +488,9 @@ void Tracking::Track()
             }
         }
 
+        cout << "mCurrentFrame in Track:\n" << mCurrentFrame.mTcw << endl;
+        mLastFrame = Frame(mCurrentFrame);
+
         // Reset if the camera get lost soon after initialization
         if(mState==LOST)
         {
@@ -487,7 +505,6 @@ void Tracking::Track()
         if(!mCurrentFrame.mpReferenceKF)
             mCurrentFrame.mpReferenceKF = mpReferenceKF;
 
-        mLastFrame = Frame(mCurrentFrame);
     }
 
     // Store frame pose information to retrieve the complete camera trajectory afterwards.
@@ -657,10 +674,10 @@ void Tracking::MonocularInitialization()
             }
 
             // Set Frame Poses
-            mInitialFrame.SetPose(cv::Mat::eye(4,4,CV_32F));
-            cv::Mat Tcw = cv::Mat::eye(4,4,CV_32F);
-            Rcw.copyTo(Tcw.rowRange(0,3).colRange(0,3));
-            tcw.copyTo(Tcw.rowRange(0,3).col(3));
+            mInitialFrame.SetPose(cv::Mat::eye(4, 4, CV_32F));
+            cv::Mat Tcw = cv::Mat::eye(4, 4, CV_32F);
+            Rcw.copyTo(Tcw.rowRange(0, 3).colRange(0, 3));
+            tcw.copyTo(Tcw.rowRange(0, 3).col(3));
             mCurrentFrame.SetPose(Tcw);
 
             CreateInitialMapMonocular();
@@ -719,6 +736,7 @@ void Tracking::CreateInitialMapMonocular()
 
     Optimizer::MapPointsOptimization(mpMap,20);
 
+
     // Set median depth to 1
     float medianDepth = pKFini->ComputeSceneMedianDepth(2);
     float invMedianDepth = 1.0f/medianDepth;
@@ -750,7 +768,7 @@ void Tracking::CreateInitialMapMonocular()
     mpLocalMapper->InsertKeyFrame(pKFcur);
 
     mCurrentFrame.SetPose(pKFcur->GetPose());
-    mnLastKeyFrameId=mCurrentFrame.mnId;
+    mnLastKeyFrameId = mCurrentFrame.mnId;
     mpLastKeyFrame = pKFcur;
 
     mvpLocalKeyFrames.push_back(pKFcur);
@@ -768,6 +786,7 @@ void Tracking::CreateInitialMapMonocular()
     mpMap->mvpKeyFrameOrigins.push_back(pKFini);
 
     mState=OK;
+
 }
 
 void Tracking::CheckReplacedInLastFrame()
@@ -787,6 +806,72 @@ void Tracking::CheckReplacedInLastFrame()
     }
 }
 
+bool Tracking::TrackingWithLidarPose() {
+
+    ORBmatcher matcher(0.9, false);
+
+    // mCurrentFrame.SetPose(mVelocity*mLastFrame.mTcw);
+    cout << "mLastFrame.mTcw:\n" << mLastFrame.mTcw << endl; 
+    cout << "mLidarRt: \n" << mLidarRt << endl; 
+    mCurrentFrame.SetPose(mLidarRt);
+
+    fill(mCurrentFrame.mvpMapPoints.begin(), mCurrentFrame.mvpMapPoints.end(), static_cast<MapPoint*>(NULL));
+
+    // Project points seen in previous frame
+    int th;
+    if(mSensor != System::STEREO)
+        th = 15;
+    else
+        th = 80;
+    int nmatches = matcher.SearchByProjection(mCurrentFrame,mLastFrame, th, mSensor==System::MONOCULAR);
+
+    cout << "nmatches 1 :" << nmatches << endl;
+
+    // If few matches, uses a wider window search
+    if(nmatches < 20)
+    {
+        fill(mCurrentFrame.mvpMapPoints.begin(), mCurrentFrame.mvpMapPoints.end(), static_cast<MapPoint*>(NULL));
+        nmatches = matcher.SearchByProjection(mCurrentFrame,mLastFrame, 2*th, mSensor==System::MONOCULAR);
+    }
+
+    cout << "nmatches 2 :" << nmatches << endl;
+
+    mLastFrame = Frame(mCurrentFrame);
+
+    cout << "TrackingWithLidarPose mLastFrame.mTcw:\n" << mLastFrame.mTcw << endl;
+
+    if(nmatches < 20)
+        return false;
+
+    // Optimize frame pose with all matches
+    // Optimizer::PoseOptimization(&mCurrentFrame);
+
+    // Discard outliers
+    int nmatchesMap = 0;
+    for(int i =0; i<mCurrentFrame.N; i++)
+    {
+        if(mCurrentFrame.mvpMapPoints[i])
+        {
+            if(mCurrentFrame.mvbOutlier[i])
+            {
+                MapPoint* pMP = mCurrentFrame.mvpMapPoints[i];
+
+                mCurrentFrame.mvpMapPoints[i]=static_cast<MapPoint*>(NULL);
+                mCurrentFrame.mvbOutlier[i]=false;
+                pMP->mbTrackInView = false;
+                pMP->mnLastFrameSeen = mCurrentFrame.mnId;
+                nmatches--;
+            }
+            else if(mCurrentFrame.mvpMapPoints[i]->Observations()>0)
+                nmatchesMap++;
+        }
+    }    
+
+    cout << "Lidar tracking: " << nmatchesMap << endl;
+    cout << "mCurrentFrame pose:\n" << mCurrentFrame.mTcw << endl;
+
+    return nmatchesMap>=5;
+}
 
 bool Tracking::TrackReferenceKeyFrame()
 {
@@ -806,7 +891,10 @@ bool Tracking::TrackReferenceKeyFrame()
     mCurrentFrame.mvpMapPoints = vpMapPointMatches;
     mCurrentFrame.SetPose(mLastFrame.mTcw);
 
-    Optimizer::PoseOptimization(&mCurrentFrame);
+    cout << "Reference tracking" << endl; 
+    cout << "Last frame Tcw:\n" << mLastFrame.mTcw << endl; 
+
+    // Optimizer::PoseOptimization(&mCurrentFrame);
 
     // Discard outliers
     int nmatchesMap = 0;
@@ -908,7 +996,7 @@ bool Tracking::UpdateMotionVelocity(cv::Mat& LastTwc) {
     // cv::Mat mtest_Velocity = mCurrentFrame.mTcw * LastTwc;
     mVelocity = mCurrentFrame.mTcw * LastTwc;
 
-    cout << "mVelocity: \n" << mVelocity << endl;
+    // cout << "mVelocity: \n" << mVelocity << endl;
     return true;
 }
 
@@ -918,9 +1006,11 @@ bool Tracking::TrackWithMotionModel()
 
     // Update last frame pose according to its reference keyframe
     // Create "visual odometry" points
+    cout << "TrackWithMotionModel" << endl;
     UpdateLastFrame();
 
     mCurrentFrame.SetPose(mVelocity*mLastFrame.mTcw);
+    // mCurrentFrame.SetPose()
 
     fill(mCurrentFrame.mvpMapPoints.begin(),mCurrentFrame.mvpMapPoints.end(),static_cast<MapPoint*>(NULL));
 
@@ -943,7 +1033,7 @@ bool Tracking::TrackWithMotionModel()
         return false;
 
     // Optimize frame pose with all matches
-    Optimizer::PoseOptimization(&mCurrentFrame);
+    // Optimizer::PoseOptimization(&mCurrentFrame);
 
     // Discard outliers
     int nmatchesMap = 0;
@@ -985,7 +1075,7 @@ bool Tracking::TrackLocalMap()
     SearchLocalPoints();
 
     // Optimize Pose
-    Optimizer::PoseOptimization(&mCurrentFrame);
+    // Optimizer::PoseOptimization(&mCurrentFrame);
     mnMatchesInliers = 0;
 
     // Update MapPoints Statistics
@@ -1010,9 +1100,11 @@ bool Tracking::TrackLocalMap()
         }
     }
 
+    cout << "mnMatchesInliers: " << mnMatchesInliers << endl;
+
     // Decide if the tracking was succesful
     // More restrictive if there was a relocalization recently
-    if(mCurrentFrame.mnId<mnLastRelocFrameId+mMaxFrames && mnMatchesInliers<50)
+    if(mCurrentFrame.mnId<mnLastRelocFrameId+mMaxFrames && mnMatchesInliers<30)
         return false;
 
     if(mnMatchesInliers<30)
