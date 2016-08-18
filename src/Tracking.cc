@@ -629,40 +629,11 @@ void Tracking::MonocularInitialization()
             return;
         }
 
-        // cv::Mat Rcw; // Current Camera Rotation
-        // cv::Mat tcw; // Current Camera Translation
-        // vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
-
-        // if(mpInitializer->Initialize(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
-        // {
-        //     for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
-        //     {
-        //         if(mvIniMatches[i]>=0 && !vbTriangulated[i])
-        //         {
-        //             mvIniMatches[i]=-1;
-        //             nmatches--;
-        //         }
-        //     }
-
-        //     // Set Frame Poses
-        //     mInitialFrame.SetPose(cv::Mat::eye(4,4,CV_32F));
-            
-        //     cv::Mat Tcw = cv::Mat::eye(4,4,CV_32F);
-        //     Rcw.copyTo(Tcw.rowRange(0,3).colRange(0,3));
-        //     tcw.copyTo(Tcw.rowRange(0,3).col(3));
-        //     mCurrentFrame.SetPose(Tcw);
-
-        //     cout << "Tcw:\n" << Tcw << endl;
-
-        //     CreateInitialMapMonocular();
-        // }
-
-        // LIDAR version
-        cv::Mat Rcw = mLidarRotation; // Current Camera Rotation
-        cv::Mat tcw = mLidarTranslation; // Current Camera Translation
+        cv::Mat Rcw; // Current Camera Rotation
+        cv::Mat tcw; // Current Camera Translation
         vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
 
-        if(mpInitializer->InitializeWithLidar(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
+        if(mpInitializer->Initialize(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
         {
             for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
             {
@@ -674,14 +645,43 @@ void Tracking::MonocularInitialization()
             }
 
             // Set Frame Poses
-            mInitialFrame.SetPose(cv::Mat::eye(4, 4, CV_32F));
-            cv::Mat Tcw = cv::Mat::eye(4, 4, CV_32F);
-            Rcw.copyTo(Tcw.rowRange(0, 3).colRange(0, 3));
-            tcw.copyTo(Tcw.rowRange(0, 3).col(3));
+            mInitialFrame.SetPose(cv::Mat::eye(4,4,CV_32F));
+            
+            cv::Mat Tcw = cv::Mat::eye(4,4,CV_32F);
+            Rcw.copyTo(Tcw.rowRange(0,3).colRange(0,3));
+            tcw.copyTo(Tcw.rowRange(0,3).col(3));
             mCurrentFrame.SetPose(Tcw);
+
+            cout << "Tcw:\n" << Tcw << endl;
 
             CreateInitialMapMonocular();
         }
+
+        // LIDAR version
+        // cv::Mat Rcw = mLidarRotation; // Current Camera Rotation
+        // cv::Mat tcw = mLidarTranslation; // Current Camera Translation
+        // vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
+
+        // if(mpInitializer->InitializeWithLidar(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
+        // {
+        //     for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
+        //     {
+        //         if(mvIniMatches[i]>=0 && !vbTriangulated[i])
+        //         {
+        //             mvIniMatches[i]=-1;
+        //             nmatches--;
+        //         }
+        //     }
+
+        //     // Set Frame Poses
+        //     mInitialFrame.SetPose(cv::Mat::eye(4, 4, CV_32F));
+        //     cv::Mat Tcw = cv::Mat::eye(4, 4, CV_32F);
+        //     Rcw.copyTo(Tcw.rowRange(0, 3).colRange(0, 3));
+        //     tcw.copyTo(Tcw.rowRange(0, 3).col(3));
+        //     mCurrentFrame.SetPose(Tcw);
+
+        //     CreateInitialMapMonocular();
+        // }
     }
 }
 
@@ -734,8 +734,8 @@ void Tracking::CreateInitialMapMonocular()
     // Bundle Adjustment
     cout << "New Map created with " << mpMap->MapPointsInMap() << " points" << endl;
 
-    // Optimizer::MapPointsOptimization(mpMap,20);
-    Optimizer::GlobalBundleAdjustemnt(mpMap, 20);
+    Optimizer::MapPointsOptimization(mpMap,20);
+    // Optimizer::GlobalBundleAdjustemnt(mpMap, 20);
 
     // Set median depth to 1
     float medianDepth = pKFini->ComputeSceneMedianDepth(2);
