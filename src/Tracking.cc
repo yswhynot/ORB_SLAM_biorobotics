@@ -895,7 +895,8 @@ bool Tracking::TrackReferenceKeyFrame()
     cout << "Reference tracking" << endl; 
     cout << "Last frame Tcw:\n" << mLastFrame.mTcw << endl; 
 
-    // Optimizer::PoseOptimization(&mCurrentFrame);
+    if(mMapBuilt)
+        Optimizer::PoseOptimization(&mCurrentFrame);
 
     // Discard outliers
     int nmatchesMap = 0;
@@ -1034,7 +1035,8 @@ bool Tracking::TrackWithMotionModel()
         return false;
 
     // Optimize frame pose with all matches
-    // Optimizer::PoseOptimization(&mCurrentFrame);
+    if(mMapBuilt)
+        Optimizer::PoseOptimization(&mCurrentFrame);
 
     // Discard outliers
     int nmatchesMap = 0;
@@ -1076,7 +1078,8 @@ bool Tracking::TrackLocalMap()
     SearchLocalPoints();
 
     // Optimize Pose
-    // Optimizer::PoseOptimization(&mCurrentFrame);
+    if(mMapBuilt)
+        Optimizer::PoseOptimization(&mCurrentFrame);
     mnMatchesInliers = 0;
 
     // Update MapPoints Statistics

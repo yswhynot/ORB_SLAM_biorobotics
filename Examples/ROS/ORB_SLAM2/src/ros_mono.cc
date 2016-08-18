@@ -90,6 +90,11 @@ public:
                 0, 1, 0, -0.2667,
                 0, 0, 0, 1;
 
+        // gcl << -1, 0, 0, -0.4445,
+        //         0, 0, -1, 0.3683,
+        //         0, -1, 0, -0.2667,
+        //         0, 0, 0, 1;
+
     }
     void GrabLidarPose(const nav_msgs::Odometry::ConstPtr& input_pose);
 
