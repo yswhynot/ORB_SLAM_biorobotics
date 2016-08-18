@@ -401,7 +401,7 @@ namespace g2o{
         cumTime += dts;
         if (! errorComputed)
           computeActiveErrors();
-        cerr << "iteration= " << i
+        cout << "iteration= " << i
           << "\t chi2= " << FIXED(activeRobustChi2())
           << "\t time= " << dts
           << "\t cumTime= " << cumTime
