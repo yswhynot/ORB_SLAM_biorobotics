@@ -258,7 +258,7 @@ cv::Mat Tracking::GrabImageMonocular(const cv::Mat &im, const double &timestamp,
             cvtColor(mImGray,mImGray,CV_BGRA2GRAY);
     }
 
-    if(mState==NOT_INITIALIZED || mState==NO_IMAGES_YET)
+    if(mState==NO_IMAGES_YET)
         mCurrentFrame = Frame(mImGray,timestamp,mpIniORBextractor,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
     else
         mCurrentFrame = Frame(mImGray,timestamp,mpORBextractorLeft,mpORBVocabulary,mK,mDistCoef,mbf,mThDepth);
@@ -285,6 +285,7 @@ void Tracking::Track()
 
     // Get Map Mutex -> Map cannot be changed
     unique_lock<mutex> lock(mpMap->mMutexMapUpdate);
+    mpFrameDrawer->Update(this);
 
     if(mState==NOT_INITIALIZED)
     {
@@ -297,115 +298,33 @@ void Tracking::Track()
 
         if(mState!=OK)
             return;
-    }
-    else
-    {
+    } else {
+
         // System is initialized. Track Frame.
         bool bOK;
 
         // Initial camera pose estimation using motion model or relocalization (if tracking is lost)
-        if(!mbOnlyTracking)
-        {
+        if(!mbOnlyTracking) {
             // Local Mapping is activated. This is the normal behaviour, unless
             // you explicitly activate the "only tracking" mode.
 
-            if(mState==OK)
-            {
+            if(mState==OK) {
                 // Local Mapping might have changed some MapPoints tracked in last frame
                 CheckReplacedInLastFrame();
 
                 if(mMapBuilt) {
-                    if(mVelocity.empty() || mCurrentFrame.mnId<mnLastRelocFrameId+2)
-                    {
+                    if(mVelocity.empty() || mCurrentFrame.mnId<mnLastRelocFrameId+2) {
                         bOK = TrackReferenceKeyFrame();
-                    }
-                    else
-                    {
+                    } else {
                         bOK = TrackWithMotionModel();
                         if(!bOK)
                             bOK = TrackReferenceKeyFrame();
                     }
                 } else {
-                    if(mVelocity.empty())
-                        bOK = TrackReferenceKeyFrame();
-                    else
-                        bOK = TrackingWithLidarPose();
+                    bOK = TrackingWithLidarPose();
                 }
-            }
-            else
-            {
+            } else {
                 bOK = Relocalization();
-            }
-        }
-        else
-        {
-            // Only Tracking: Local Mapping is deactivated
-
-            if(mState==LOST)
-            {
-                bOK = Relocalization();
-            }
-            else
-            {
-                if(!mbVO)
-                {
-                    // In last frame we tracked enough MapPoints in the map
-
-                    if(!mVelocity.empty())
-                    {
-                        bOK = TrackWithMotionModel();
-                    }
-                    else
-                    {
-                        bOK = TrackReferenceKeyFrame();
-                    }
-                }
-                else
-                {
-                    // In last frame we tracked mainly "visual odometry" points.
-
-                    // We compute two camera poses, one from motion model and one doing relocalization.
-                    // If relocalization is sucessfull we choose that solution, otherwise we retain
-                    // the "visual odometry" solution.
-
-                    bool bOKMM = false;
-                    bool bOKReloc = false;
-                    vector<MapPoint*> vpMPsMM;
-                    vector<bool> vbOutMM;
-                    cv::Mat TcwMM;
-                    if(!mVelocity.empty())
-                    {
-                        bOKMM = TrackWithMotionModel();
-                        vpMPsMM = mCurrentFrame.mvpMapPoints;
-                        vbOutMM = mCurrentFrame.mvbOutlier;
-                        TcwMM = mCurrentFrame.mTcw.clone();
-                    }
-                    bOKReloc = Relocalization();
-
-                    if(bOKMM && !bOKReloc)
-                    {
-                        mCurrentFrame.SetPose(TcwMM);
-                        mCurrentFrame.mvpMapPoints = vpMPsMM;
-                        mCurrentFrame.mvbOutlier = vbOutMM;
-
-                        if(mbVO)
-                        {
-                            for(int i =0; i<mCurrentFrame.N; i++)
-                            {
-                                if(mCurrentFrame.mvpMapPoints[i] && !mCurrentFrame.mvbOutlier[i])
-                                {
-                                    mCurrentFrame.mvpMapPoints[i]->IncreaseFound();
-                                }
-                            }
-                        }
-                    }
-                    else if(bOKReloc)
-                    {
-                        mbVO = false;
-                    }
-
-                    bOK = bOKReloc || bOKMM;
-                }
             }
         }
 
@@ -490,6 +409,7 @@ void Tracking::Track()
 
         cout << "mCurrentFrame in Track:\n" << mCurrentFrame.mTcw << endl;
         mLastFrame = Frame(mCurrentFrame);
+    }
 
         // Reset if the camera get lost soon after initialization
         if(mState==LOST)
@@ -505,7 +425,7 @@ void Tracking::Track()
         if(!mCurrentFrame.mpReferenceKF)
             mCurrentFrame.mpReferenceKF = mpReferenceKF;
 
-    }
+    
 
     // Store frame pose information to retrieve the complete camera trajectory afterwards.
     if(!mCurrentFrame.mTcw.empty())
@@ -585,104 +505,52 @@ void Tracking::StereoInitialization()
 void Tracking::MonocularInitialization()
 {
 
-    if(!mpInitializer)
+    // Try to initialize
+    if((int)mCurrentFrame.mvKeys.size()<=100)
     {
-        // Set Reference Frame
-        if(mCurrentFrame.mvKeys.size()>100)
-        {
-            mInitialFrame = Frame(mCurrentFrame);
-            mLastFrame = Frame(mCurrentFrame);
-            mvbPrevMatched.resize(mCurrentFrame.mvKeysUn.size());
-            for(size_t i=0; i<mCurrentFrame.mvKeysUn.size(); i++)
-                mvbPrevMatched[i]=mCurrentFrame.mvKeysUn[i].pt;
-
-            if(mpInitializer)
-                delete mpInitializer;
-
-            mpInitializer =  new Initializer(mCurrentFrame,1.0,200);
-
-            fill(mvIniMatches.begin(),mvIniMatches.end(),-1);
-
-            return;
-        }
+        delete mpInitializer;
+        mpInitializer = static_cast<Initializer*>(NULL);
+        fill(mvIniMatches.begin(),mvIniMatches.end(),-1);
+        return;
     }
-    else
+
+    // Find correspondences
+    ORBmatcher matcher(0.9,true);
+    int nmatches = matcher.SearchForInitialization(mInitialFrame,mCurrentFrame,mvbPrevMatched,mvIniMatches,100);
+
+    // Check if there are enough correspondences
+    if(nmatches<100)
     {
-        // Try to initialize
-        if((int)mCurrentFrame.mvKeys.size()<=100)
+        delete mpInitializer;
+        mpInitializer = static_cast<Initializer*>(NULL);
+        return;
+    }
+
+    // LIDAR version
+    cv::Mat Rcw = mLidarRotation; // Current Camera Rotation
+    cv::Mat tcw = mLidarTranslation; // Current Camera Translation
+    vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
+
+    if(mpInitializer->InitializeWithLidar(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated)) {
+        for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
         {
-            delete mpInitializer;
-            mpInitializer = static_cast<Initializer*>(NULL);
-            fill(mvIniMatches.begin(),mvIniMatches.end(),-1);
-            return;
-        }
-
-        // Find correspondences
-        ORBmatcher matcher(0.9,true);
-        int nmatches = matcher.SearchForInitialization(mInitialFrame,mCurrentFrame,mvbPrevMatched,mvIniMatches,100);
-
-        // Check if there are enough correspondences
-        if(nmatches<100)
-        {
-            delete mpInitializer;
-            mpInitializer = static_cast<Initializer*>(NULL);
-            return;
-        }
-
-        cv::Mat Rcw; // Current Camera Rotation
-        cv::Mat tcw; // Current Camera Translation
-        vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
-
-        if(mpInitializer->Initialize(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
-        {
-            for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
+            if(mvIniMatches[i]>=0 && !vbTriangulated[i])
             {
-                if(mvIniMatches[i]>=0 && !vbTriangulated[i])
-                {
-                    mvIniMatches[i]=-1;
-                    nmatches--;
-                }
+                mvIniMatches[i]=-1;
+                nmatches--;
             }
-
-            // Set Frame Poses
-            mInitialFrame.SetPose(cv::Mat::eye(4,4,CV_32F));
-            
-            cv::Mat Tcw = cv::Mat::eye(4,4,CV_32F);
-            Rcw.copyTo(Tcw.rowRange(0,3).colRange(0,3));
-            tcw.copyTo(Tcw.rowRange(0,3).col(3));
-            mCurrentFrame.SetPose(Tcw);
-
-            cout << "Tcw:\n" << Tcw << endl;
-
-            CreateInitialMapMonocular();
         }
 
-        // LIDAR version
-        // cv::Mat Rcw = mLidarRotation; // Current Camera Rotation
-        // cv::Mat tcw = mLidarTranslation; // Current Camera Translation
-        // vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
+        // Set Frame Poses
+        mInitialFrame.SetPose(cv::Mat::eye(4, 4, CV_32F));
+        cv::Mat Tcw = cv::Mat::eye(4, 4, CV_32F);
+        Rcw.copyTo(Tcw.rowRange(0, 3).colRange(0, 3));
+        tcw.copyTo(Tcw.rowRange(0, 3).col(3));
+        mCurrentFrame.SetPose(Tcw);
 
-        // if(mpInitializer->InitializeWithLidar(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated))
-        // {
-        //     for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
-        //     {
-        //         if(mvIniMatches[i]>=0 && !vbTriangulated[i])
-        //         {
-        //             mvIniMatches[i]=-1;
-        //             nmatches--;
-        //         }
-        //     }
-
-        //     // Set Frame Poses
-        //     mInitialFrame.SetPose(cv::Mat::eye(4, 4, CV_32F));
-        //     cv::Mat Tcw = cv::Mat::eye(4, 4, CV_32F);
-        //     Rcw.copyTo(Tcw.rowRange(0, 3).colRange(0, 3));
-        //     tcw.copyTo(Tcw.rowRange(0, 3).col(3));
-        //     mCurrentFrame.SetPose(Tcw);
-
-        //     CreateInitialMapMonocular();
-        // }
+        CreateInitialMapMonocular();
     }
+    
 }
 
 void Tracking::CreateInitialMapMonocular()
@@ -734,36 +602,36 @@ void Tracking::CreateInitialMapMonocular()
     // Bundle Adjustment
     cout << "New Map created with " << mpMap->MapPointsInMap() << " points" << endl;
 
-    Optimizer::MapPointsOptimization(mpMap,20);
+    Optimizer::GlobalMapPointsOptimization(mpMap, 20);
     // Optimizer::GlobalBundleAdjustemnt(mpMap, 20);
 
     // Set median depth to 1
-    float medianDepth = pKFini->ComputeSceneMedianDepth(2);
-    cout << "medianDepth: " << medianDepth << endl;
-    float invMedianDepth = 1.0f/medianDepth;
+    // float medianDepth = pKFini->ComputeSceneMedianDepth(2);
+    // cout << "medianDepth: " << medianDepth << endl;
+    // float invMedianDepth = 1.0f/medianDepth;
 
-    if(medianDepth<0 || pKFcur->TrackedMapPoints(1)<100)
-    {
-        cout << "Wrong initialization, reseting..." << endl;
-        Reset();
-        return;
-    }
+    // if(medianDepth<0 || pKFcur->TrackedMapPoints(1)<100)
+    // {
+    //     cout << "Wrong initialization, reseting..." << endl;
+    //     Reset();
+    //     return;
+    // }
 
-    // Scale initial baseline
-    cv::Mat Tc2w = pKFcur->GetPose();
-    Tc2w.col(3).rowRange(0,3) = Tc2w.col(3).rowRange(0,3)*invMedianDepth;
-    pKFcur->SetPose(Tc2w);
+    // // Scale initial baseline
+    // cv::Mat Tc2w = pKFcur->GetPose();
+    // Tc2w.col(3).rowRange(0,3) = Tc2w.col(3).rowRange(0,3)*invMedianDepth;
+    // pKFcur->SetPose(Tc2w);
 
-    // Scale points
-    vector<MapPoint*> vpAllMapPoints = pKFini->GetMapPointMatches();
-    for(size_t iMP=0; iMP<vpAllMapPoints.size(); iMP++)
-    {
-        if(vpAllMapPoints[iMP])
-        {
-            MapPoint* pMP = vpAllMapPoints[iMP];
-            pMP->SetWorldPos(pMP->GetWorldPos()*invMedianDepth);
-        }
-    }
+    // // Scale points
+    // vector<MapPoint*> vpAllMapPoints = pKFini->GetMapPointMatches();
+    // for(size_t iMP=0; iMP<vpAllMapPoints.size(); iMP++)
+    // {
+    //     if(vpAllMapPoints[iMP])
+    //     {
+    //         MapPoint* pMP = vpAllMapPoints[iMP];
+    //         pMP->SetWorldPos(pMP->GetWorldPos()*invMedianDepth);
+    //     }
+    // }
 
     mpLocalMapper->InsertKeyFrame(pKFini);
     mpLocalMapper->InsertKeyFrame(pKFcur);
@@ -846,6 +714,7 @@ bool Tracking::TrackingWithLidarPose() {
 
     // Optimize frame pose with all matches
     // Optimizer::PoseOptimization(&mCurrentFrame);
+    Optimizer::
 
     // Discard outliers
     int nmatchesMap = 0;
