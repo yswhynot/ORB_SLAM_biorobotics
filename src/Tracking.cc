@@ -448,59 +448,7 @@ void Tracking::Track()
 }
 
 
-void Tracking::StereoInitialization()
-{
-    if(mCurrentFrame.N>500)
-    {
-        // Set Frame pose to the origin
-        mCurrentFrame.SetPose(cv::Mat::eye(4,4,CV_32F));
-
-        // Create KeyFrame
-        KeyFrame* pKFini = new KeyFrame(mCurrentFrame,mpMap,mpKeyFrameDB);
-
-        // Insert KeyFrame in the map
-        mpMap->AddKeyFrame(pKFini);
-
-        // Create MapPoints and asscoiate to KeyFrame
-        for(int i=0; i<mCurrentFrame.N;i++)
-        {
-            float z = mCurrentFrame.mvDepth[i];
-            if(z>0)
-            {
-                cv::Mat x3D = mCurrentFrame.UnprojectStereo(i);
-                MapPoint* pNewMP = new MapPoint(x3D,pKFini,mpMap);
-                pNewMP->AddObservation(pKFini,i);
-                pKFini->AddMapPoint(pNewMP,i);
-                pNewMP->ComputeDistinctiveDescriptors();
-                pNewMP->UpdateNormalAndDepth();
-                mpMap->AddMapPoint(pNewMP);
-
-                mCurrentFrame.mvpMapPoints[i]=pNewMP;
-            }
-        }
-
-        cout << "New map created with " << mpMap->MapPointsInMap() << " points" << endl;
-
-        mpLocalMapper->InsertKeyFrame(pKFini);
-
-        mLastFrame = Frame(mCurrentFrame);
-        mnLastKeyFrameId=mCurrentFrame.mnId;
-        mpLastKeyFrame = pKFini;
-
-        mvpLocalKeyFrames.push_back(pKFini);
-        mvpLocalMapPoints=mpMap->GetAllMapPoints();
-        mpReferenceKF = pKFini;
-        mCurrentFrame.mpReferenceKF = pKFini;
-
-        mpMap->SetReferenceMapPoints(mvpLocalMapPoints);
-
-        mpMap->mvpKeyFrameOrigins.push_back(pKFini);
-
-        mpMapDrawer->SetCurrentCameraPose(mCurrentFrame.mTcw);
-
-        mState=OK;
-    }
-}
+void Tracking::StereoInitialization(){}
 
 void Tracking::MonocularInitialization()
 {
@@ -515,21 +463,29 @@ void Tracking::MonocularInitialization()
     }
 
     // Find correspondences
-    ORBmatcher matcher(0.9,true);
-    int nmatches = matcher.SearchForInitialization(mInitialFrame,mCurrentFrame,mvbPrevMatched,mvIniMatches,100);
+    ORBmatcher matcher(0.9, false);
+    int nmatches = matcher.SearchForInitialization(mInitialFrame, mCurrentFrame, mvbPrevMatched, mvIniMatches, 100);
 
+    cout << "nmatches: " << nmatches << endl;
     // Check if there are enough correspondences
-    if(nmatches<100)
-    {
-        delete mpInitializer;
-        mpInitializer = static_cast<Initializer*>(NULL);
-        return;
-    }
+    // if(nmatches < 100)
+    // {
+    //     delete mpInitializer;
+    //     mpInitializer = static_cast<Initializer*>(NULL);
+    //     return;
+    // }
 
     // LIDAR version
     cv::Mat Rcw = mLidarRotation; // Current Camera Rotation
     cv::Mat tcw = mLidarTranslation; // Current Camera Translation
     vector<bool> vbTriangulated; // Triangulated Correspondences (mvIniMatches)
+
+    // Set Frame Poses
+    mInitialFrame.SetPose(cv::Mat::eye(4, 4, CV_32F));
+    cv::Mat Tcw = cv::Mat::eye(4, 4, CV_32F);
+    Rcw.copyTo(Tcw.rowRange(0, 3).colRange(0, 3));
+    tcw.copyTo(Tcw.rowRange(0, 3).col(3));
+    mCurrentFrame.SetPose(Tcw);
 
     if(mpInitializer->InitializeWithLidar(mCurrentFrame, mvIniMatches, Rcw, tcw, mvIniP3D, vbTriangulated)) {
         for(size_t i=0, iend=mvIniMatches.size(); i<iend;i++)
@@ -540,13 +496,6 @@ void Tracking::MonocularInitialization()
                 nmatches--;
             }
         }
-
-        // Set Frame Poses
-        mInitialFrame.SetPose(cv::Mat::eye(4, 4, CV_32F));
-        cv::Mat Tcw = cv::Mat::eye(4, 4, CV_32F);
-        Rcw.copyTo(Tcw.rowRange(0, 3).colRange(0, 3));
-        tcw.copyTo(Tcw.rowRange(0, 3).col(3));
-        mCurrentFrame.SetPose(Tcw);
 
         CreateInitialMapMonocular();
     }
@@ -714,7 +663,7 @@ bool Tracking::TrackingWithLidarPose() {
 
     // Optimize frame pose with all matches
     // Optimizer::PoseOptimization(&mCurrentFrame);
-    Optimizer::
+    Optimizer::FramePointsOptimization(&mCurrentFrame);
 
     // Discard outliers
     int nmatchesMap = 0;

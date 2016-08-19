@@ -647,7 +647,7 @@ void LoopClosing::RunGlobalBundleAdjustment(unsigned long nLoopKF)
     if(mMapBuilt)
         Optimizer::GlobalBundleAdjustemnt(mpMap, 20, &mbStopGBA, nLoopKF, false);
     else {
-        Optimizer::MapPointsOptimization(mpMap, 20, &mbStopGBA, nLoopKF, false);
+        Optimizer::GlobalMapPointsOptimization(mpMap, 20, &mbStopGBA, nLoopKF, false);
     }
 
     // Update all MapPoints and KeyFrames
