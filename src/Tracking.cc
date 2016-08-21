@@ -1616,6 +1616,8 @@ void Tracking::InformOnlyTracking(const bool &flag)
     mbOnlyTracking = flag;
 }
 
-
+void Tracking::SaveMap() {
+    
+}
 
 } //namespace ORB_SLAM

@@ -393,4 +393,8 @@ int MapPoint::PredictScale(const float &currentDist, const float &logScaleFactor
     return ceil(log(ratio)/logScaleFactor);
 }
 
+void MapPoint::serialize(Archive& ar, const unsigned int version) {
+    ar & mnId &
+}
+
 } //namespace ORB_SLAM
