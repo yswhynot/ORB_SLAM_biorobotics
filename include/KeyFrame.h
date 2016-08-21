@@ -28,6 +28,7 @@
 #include "ORBextractor.h"
 #include "Frame.h"
 #include "KeyFrameDatabase.h"
+#include "CVSerialize.h"
 
 #include <mutex>
 
@@ -40,8 +41,11 @@ class MapPoint;
 class Frame;
 class KeyFrameDatabase;
 
-class KeyFrame
-{
+class KeyFrame {
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version);
+
 public:
     KeyFrame(Frame &F, Map* pMap, KeyFrameDatabase* pKFDB);
 

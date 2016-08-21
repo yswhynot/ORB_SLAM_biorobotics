@@ -24,6 +24,7 @@
 #include "KeyFrame.h"
 #include "Frame.h"
 #include "Map.h"
+#include "CVSerialize.h"
 
 #include <opencv2/core/core.hpp>
 #include <mutex>

@@ -662,4 +662,110 @@ float KeyFrame::ComputeSceneMedianDepth(const int q)
     return vDepths[(vDepths.size()-1)/q];
 }
 
+void KeyFrame::serialize(Archive& ar, const unsigned int version) {
+    ar & nNextId;
+    ar & mnId;
+    ar & mnFrameId;
+
+    ar & mTimeStamp;
+
+    // Grid (to speed up feature matching)
+    ar & mnGridCols;
+    ar & mnGridRows;
+    ar & mfGridElementWidthInv;
+    ar & mfGridElementHeightInv;
+
+    // Variables used by the tracking
+    ar & mnTrackReferenceForFrame;
+    ar & mnFuseTargetForKF;
+
+    // Variables used by the local mapping
+    ar & mnBALocalForKF;
+    ar & mnBAFixedForKF;
+
+    // Variables used by the keyframe database
+    ar & mnLoopQuery;
+    ar & mnLoopWords;
+    ar & mLoopScore;
+    ar & mnRelocQuery;
+    ar & mnRelocWords;
+    ar & mRelocScore;
+
+    // Variables used by loop closing
+    ar & mTcwGBA;
+    ar & mTcwBefGBA;
+    ar & mnBAGlobalForKF;
+
+    // Calibration parameters
+    ar & fx, fy, cx, cy, invfx, invfy, mbf, mb, mThDepth;
+
+    // Number of KeyPoints
+    ar & N;
+
+    // KeyPoints, stereo coordinate and descriptors (all associated by an index)
+    ar & mvKeys;
+    ar & mvKeysUn;
+    ar & mvuRight; // negative value for monocular points
+    ar & mvDepth; // negative value for monocular points
+    ar & mDescriptors;
+
+    //BoW
+    // DBoW2::BowVector mBowVec;
+    // DBoW2::FeatureVector mFeatVec;
+
+    // Pose relative to parent (this is computed when bad flag is activated)
+    ar & mTcp;
+
+    // Scale
+    ar & mnScaleLevels;
+    ar & mfScaleFactor;
+    ar & mfLogScaleFactor;
+    ar & mvScaleFactors;
+    ar & mvLevelSigma2;
+    ar & mvInvLevelSigma2;
+
+    // Image bounds and calibration
+    ar & mnMinX;
+    ar & mnMinY;
+    ar & mnMaxX;
+    ar & mnMaxY;
+    ar & mK;
+
+    // SE3 Pose and camera center
+    ar & Tcw;
+    ar & Twc;
+    ar & Ow;
+
+    ar & Cw; // Stereo middel point. Only for visualization
+
+    // MapPoints associated to keypoints
+    ar & mvpMapPoints;
+
+    // BoW
+    ar & mpKeyFrameDB;
+    ar & mpORBvocabulary;
+
+    // Grid over the image to speed up feature matching
+    ar & mGrid;
+
+    ar & mConnectedKeyFrameWeights;
+    ar & mvpOrderedConnectedKeyFrames;
+    ar & mvOrderedWeights;
+
+    // Spanning Tree and Loop Edges
+    ar & mbFirstConnection;
+    ar & mpParent;
+    ar & mspChildrens;
+    ar & mspLoopEdges;
+
+    // Bad flags
+    ar & mbNotErase;
+    ar & mbToBeErased;
+    ar & mbBad;    
+
+    ar & mHalfBaseline; // Only for visualization
+
+    ar & mpMap;
+}
+
 } //namespace ORB_SLAM
