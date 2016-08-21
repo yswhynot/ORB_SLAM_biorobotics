@@ -28,6 +28,7 @@
 #include "KeyFrame.h"
 #include "Frame.h"
 #include "ORBVocabulary.h"
+#include "CVSerialize.h"
 
 #include <mutex>
 
@@ -38,9 +39,11 @@ namespace ORB_SLAM2
 class KeyFrame;
 class Frame;
 
+class KeyFrameDatabase {
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int version);
 
-class KeyFrameDatabase
-{
 public:
 
     KeyFrameDatabase(const ORBVocabulary &voc);

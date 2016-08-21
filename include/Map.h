@@ -23,6 +23,8 @@
 
 #include "MapPoint.h"
 #include "KeyFrame.h"
+#include "CVSerialize.h"
+
 #include <set>
 
 #include <mutex>
@@ -35,8 +37,14 @@ namespace ORB_SLAM2
 class MapPoint;
 class KeyFrame;
 
-class Map
-{
+class Map {
+    friend class boost::serialization::access;
+    template<class Archive>
+    void save(Archive& ar, const unsigned int version) const;
+    template<class Archive>
+    void load(Archive& ar, const unsigned int version);
+    BOOST_SERIALIZATION_SPLIT_MEMBER();
+
 public:
     Map();
 
