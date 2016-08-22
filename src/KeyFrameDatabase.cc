@@ -308,9 +308,9 @@ vector<KeyFrame*> KeyFrameDatabase::DetectRelocalizationCandidates(Frame *F)
     return vpRelocCandidates;
 }
 
-template<class Archive>
-void KeyFrameDatabase::serialize(Archive& ar, const unsigned int version) {
-    ar & mvInvertedFile;
-}
+// template<class Archive>
+// void KeyFrameDatabase::serialize(Archive& ar, const unsigned int version) {
+//     ar & mvInvertedFile;
+// }
 
 } //namespace ORB_SLAM

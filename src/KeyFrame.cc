@@ -662,111 +662,325 @@ float KeyFrame::ComputeSceneMedianDepth(const int q)
     return vDepths[(vDepths.size()-1)/q];
 }
 
-template<class Archive>
-void KeyFrame::serialize(Archive& ar, const unsigned int version) {
-    ar & nNextId;
-    ar & mnId;
-    ar & mnFrameId;
+// template<class Archive>
+// void KeyFrame::save(Archive& ar, const unsigned int version) const {
+//     ar & nNextId;
+//     ar & mnId;
+//     ar & mnFrameId;
 
-    ar & mTimeStamp;
+//     ar & mTimeStamp;
 
-    // Grid (to speed up feature matching)
-    ar & mnGridCols;
-    ar & mnGridRows;
-    ar & mfGridElementWidthInv;
-    ar & mfGridElementHeightInv;
+//     // Grid (to speed up feature matching)
+//     ar & mnGridCols;
+//     ar & mnGridRows;
+//     ar & mfGridElementWidthInv;
+//     ar & mfGridElementHeightInv;
 
-    // Variables used by the tracking
-    ar & mnTrackReferenceForFrame;
-    ar & mnFuseTargetForKF;
+//     // Variables used by the tracking
+//     ar & mnTrackReferenceForFrame;
+//     ar & mnFuseTargetForKF;
 
-    // Variables used by the local mapping
-    ar & mnBALocalForKF;
-    ar & mnBAFixedForKF;
+//     // Variables used by the local mapping
+//     ar & mnBALocalForKF;
+//     ar & mnBAFixedForKF;
 
-    // Variables used by the keyframe database
-    ar & mnLoopQuery;
-    ar & mnLoopWords;
-    ar & mLoopScore;
-    ar & mnRelocQuery;
-    ar & mnRelocWords;
-    ar & mRelocScore;
+//     // Variables used by the keyframe database
+//     ar & mnLoopQuery;
+//     ar & mnLoopWords;
+//     ar & mLoopScore;
+//     ar & mnRelocQuery;
+//     ar & mnRelocWords;
+//     ar & mRelocScore;
 
-    // Variables used by loop closing
-    ar & mTcwGBA;
-    ar & mTcwBefGBA;
-    ar & mnBAGlobalForKF;
+//     // Variables used by loop closing
+//     ar & mTcwGBA;
+//     ar & mTcwBefGBA;
+//     ar & mnBAGlobalForKF;
 
-    // Calibration parameters
-    ar & fx, fy, cx, cy, invfx, invfy, mbf, mb, mThDepth;
+//     // Calibration parameters
+//     ar & fx & fy & cx & cy & invfx & invfy & mbf & mb & mThDepth;
 
-    // Number of KeyPoints
-    ar & N;
+//     // Number of KeyPoints
+//     ar & N;
 
-    // KeyPoints, stereo coordinate and descriptors (all associated by an index)
-    ar & mvKeys;
-    ar & mvKeysUn;
-    ar & mvuRight; // negative value for monocular points
-    ar & mvDepth; // negative value for monocular points
-    ar & mDescriptors;
+//     // KeyPoints, stereo coordinate and descriptors (all associated by an index)
+//     ar & mvKeys;
+//     ar & mvKeysUn;
+//     ar & mvuRight; // negative value for monocular points
+//     ar & mvDepth; // negative value for monocular points
+//     ar & mDescriptors;
 
-    //BoW
-    // DBoW2::BowVector mBowVec;
-    // DBoW2::FeatureVector mFeatVec;
+//     //BoW
+//     // DBoW2::BowVector mBowVec;
+//     // DBoW2::FeatureVector mFeatVec;
 
-    // Pose relative to parent (this is computed when bad flag is activated)
-    ar & mTcp;
+//     // Pose relative to parent (this is computed when bad flag is activated)
+//     ar & mTcp;
 
-    // Scale
-    ar & mnScaleLevels;
-    ar & mfScaleFactor;
-    ar & mfLogScaleFactor;
-    ar & mvScaleFactors;
-    ar & mvLevelSigma2;
-    ar & mvInvLevelSigma2;
+//     // Scale
+//     ar & mnScaleLevels;
+//     ar & mfScaleFactor;
+//     ar & mfLogScaleFactor;
+//     ar & mvScaleFactors;
+//     ar & mvLevelSigma2;
+//     ar & mvInvLevelSigma2;
 
-    // Image bounds and calibration
-    ar & mnMinX;
-    ar & mnMinY;
-    ar & mnMaxX;
-    ar & mnMaxY;
-    ar & mK;
+//     // Image bounds and calibration
+//     ar & mnMinX;
+//     ar & mnMinY;
+//     ar & mnMaxX;
+//     ar & mnMaxY;
+//     ar & mK;
 
-    // SE3 Pose and camera center
-    ar & Tcw;
-    ar & Twc;
-    ar & Ow;
+//     // SE3 Pose and camera center
+//     ar & Tcw;
+//     ar & Twc;
+//     ar & Ow;
 
-    ar & Cw; // Stereo middel point. Only for visualization
+//     ar & Cw; // Stereo middel point. Only for visualization
 
-    // MapPoints associated to keypoints
-    ar & mvpMapPoints;
+//     // MapPoints associated to keypoints
+//     ar & mvpMapPoints;
 
-    // BoW
-    ar & mpKeyFrameDB;
-    ar & mpORBvocabulary;
+//     // BoW
+//     ar & mpKeyFrameDB;
+//     ar & mpORBvocabulary;
 
-    // Grid over the image to speed up feature matching
-    ar & mGrid;
+//     // Grid over the image to speed up feature matching
+//     ar & mGrid;
 
-    ar & mConnectedKeyFrameWeights;
-    ar & mvpOrderedConnectedKeyFrames;
-    ar & mvOrderedWeights;
+//     ar & mConnectedKeyFrameWeights;
+//     ar & mvpOrderedConnectedKeyFrames;
+//     ar & mvOrderedWeights;
 
-    // Spanning Tree and Loop Edges
-    ar & mbFirstConnection;
-    ar & mpParent;
-    ar & mspChildrens;
-    ar & mspLoopEdges;
+//     // Spanning Tree and Loop Edges
+//     ar & mbFirstConnection;
+//     ar & mpParent;
+//     ar & mspChildrens;
+//     ar & mspLoopEdges;
 
-    // Bad flags
-    ar & mbNotErase;
-    ar & mbToBeErased;
-    ar & mbBad;    
+//     // Bad flags
+//     ar & mbNotErase;
+//     ar & mbToBeErased;
+//     ar & mbBad;    
 
-    ar & mHalfBaseline; // Only for visualization
+//     ar & mHalfBaseline; // Only for visualization
 
-    ar & mpMap;
-}
+//     ar & mpMap;
+// }
+
+// template<class Archive>
+// void KeyFrame::load(Archive& ar, const unsigned int version) {
+//     ar & nNextId;
+//     ar & mnId;
+//     ar & const_cast<long unsigned int &>(mnFrameId);
+
+//     ar & const_cast<double &>(mTimeStamp);
+
+//     // Grid (to speed up feature matching)
+//     ar & const_cast<int &>(mnGridCols);
+//     ar & const_cast<int &>(mnGridRows);
+//     ar & const_cast<float &>(mfGridElementWidthInv);
+//     ar & const_cast<float &>(mfGridElementHeightInv);
+
+//     // Variables used by the tracking
+//     ar & mnTrackReferenceForFrame;
+//     ar & mnFuseTargetForKF;
+
+//     // Variables used by the local mapping
+//     ar & mnBALocalForKF;
+//     ar & mnBAFixedForKF;
+
+//     // Variables used by the keyframe database
+//     ar & mnLoopQuery;
+//     ar & mnLoopWords;
+//     ar & mLoopScore;
+//     ar & mnRelocQuery;
+//     ar & mnRelocWords;
+//     ar & mRelocScore;
+
+//     // Variables used by loop closing
+//     ar & mTcwGBA;
+//     ar & mTcwBefGBA;
+//     ar & mnBAGlobalForKF;
+
+//     // Calibration parameters
+//     ar & const_cast<float &>(fx) & const_cast<float &>(fy) & const_cast<float &>(cx) & const_cast<float &>(cy) & const_cast<float &>(invfx) & const_cast<float &>(invfy) & const_cast<float &>(mbf) & const_cast<float &>(mb) & const_cast<float &>(mThDepth);
+
+//     // Number of KeyPoints
+//     ar & const_cast<int &>(N);
+
+//     // KeyPoints, stereo coordinate and descriptors (all associated by an index)
+//     ar & const_cast<std::vector<cv::KeyPoint> &>(mvKeys);
+//     ar & const_cast<std::vector<cv::KeyPoint> &>(mvKeysUn);
+//     ar & const_cast<std::vector<float> &>(mvuRight); // negative value for monocular points
+//     ar & const_cast<std::vector<float> &>(mvDepth); // negative value for monocular points
+//     ar & const_cast<cv::Mat &>(mDescriptors);
+
+//     //BoW
+//     // DBoW2::BowVector mBowVec;
+//     // DBoW2::FeatureVector mFeatVec;
+
+//     // Pose relative to parent (this is computed when bad flag is activated)
+//     ar & mTcp;
+
+//     // Scale
+//     ar & const_cast<int &>(mnScaleLevels);
+//     ar & const_cast<float &>(mfScaleFactor);
+//     ar & const_cast<float &>(mfLogScaleFactor);
+//     ar & const_cast<std::vector<float> &>(mvScaleFactors);
+//     ar & const_cast<std::vector<float> &>(mvLevelSigma2);
+//     ar & const_cast<std::vector<float>&>(mvInvLevelSigma2);
+
+//     // Image bounds and calibration
+//     ar & const_cast<int &>(mnMinX);
+//     ar & const_cast<int &>(mnMinY);
+//     ar & const_cast<int &>(mnMaxX);
+//     ar & const_cast<int &>(mnMaxY);
+//     ar & const_cast<int &>(mK);
+
+//     // SE3 Pose and camera center
+//     ar & Tcw;
+//     ar & Twc;
+//     ar & Ow;
+
+//     ar & Cw; // Stereo middel point. Only for visualization
+
+//     // MapPoints associated to keypoints
+//     ar & mvpMapPoints;
+
+//     // BoW
+//     ar & mpKeyFrameDB;
+//     ar & mpORBvocabulary;
+
+//     // Grid over the image to speed up feature matching
+//     ar & mGrid;
+
+//     ar & mConnectedKeyFrameWeights;
+//     ar & mvpOrderedConnectedKeyFrames;
+//     ar & mvOrderedWeights;
+
+//     // Spanning Tree and Loop Edges
+//     ar & mbFirstConnection;
+//     ar & mpParent;
+//     ar & mspChildrens;
+//     ar & mspLoopEdges;
+
+//     // Bad flags
+//     ar & mbNotErase;
+//     ar & mbToBeErased;
+//     ar & mbBad;    
+
+//     ar & mHalfBaseline; // Only for visualization
+
+//     ar & mpMap;
+// }
+
+// template<class Archive>
+// void KeyFrame::serialize(Archive& ar, const unsigned int version) {
+//     ar & nNextId;
+//     ar & mnId;
+//     ar & mnFrameId;
+
+//     ar & mTimeStamp;
+
+//     // Grid (to speed up feature matching)
+//     ar & mnGridCols;
+//     ar & mnGridRows;
+//     ar & mfGridElementWidthInv;
+//     ar & mfGridElementHeightInv;
+
+//     // Variables used by the tracking
+//     ar & mnTrackReferenceForFrame;
+//     ar & mnFuseTargetForKF;
+
+//     // Variables used by the local mapping
+//     ar & mnBALocalForKF;
+//     ar & mnBAFixedForKF;
+
+//     // Variables used by the keyframe database
+//     ar & mnLoopQuery;
+//     ar & mnLoopWords;
+//     ar & mLoopScore;
+//     ar & mnRelocQuery;
+//     ar & mnRelocWords;
+//     ar & mRelocScore;
+
+//     // Variables used by loop closing
+//     ar & mTcwGBA;
+//     ar & mTcwBefGBA;
+//     ar & mnBAGlobalForKF;
+
+//     // Calibration parameters
+//     ar & fx & fy & cx & cy & invfx & invfy & mbf & mb & mThDepth;
+
+//     // Number of KeyPoints
+//     ar & N;
+
+//     // KeyPoints, stereo coordinate and descriptors (all associated by an index)
+//     ar & mvKeys;
+//     ar & mvKeysUn;
+//     ar & mvuRight; // negative value for monocular points
+//     ar & mvDepth; // negative value for monocular points
+//     ar & mDescriptors;
+
+//     //BoW
+//     // DBoW2::BowVector mBowVec;
+//     // DBoW2::FeatureVector mFeatVec;
+
+//     // Pose relative to parent (this is computed when bad flag is activated)
+//     ar & mTcp;
+
+//     // Scale
+//     ar & mnScaleLevels;
+//     ar & mfScaleFactor;
+//     ar & mfLogScaleFactor;
+//     ar & mvScaleFactors;
+//     ar & mvLevelSigma2;
+//     ar & mvInvLevelSigma2;
+
+//     // Image bounds and calibration
+//     ar & mnMinX;
+//     ar & mnMinY;
+//     ar & mnMaxX;
+//     ar & mnMaxY;
+//     ar & mK;
+
+//     // SE3 Pose and camera center
+//     ar & Tcw;
+//     ar & Twc;
+//     ar & Ow;
+
+//     ar & Cw; // Stereo middel point. Only for visualization
+
+//     // MapPoints associated to keypoints
+//     ar & mvpMapPoints;
+
+//     // BoW
+//     ar & mpKeyFrameDB;
+//     ar & mpORBvocabulary;
+
+//     // Grid over the image to speed up feature matching
+//     ar & mGrid;
+
+//     ar & mConnectedKeyFrameWeights;
+//     ar & mvpOrderedConnectedKeyFrames;
+//     ar & mvOrderedWeights;
+
+//     // Spanning Tree and Loop Edges
+//     ar & mbFirstConnection;
+//     ar & mpParent;
+//     ar & mspChildrens;
+//     ar & mspLoopEdges;
+
+//     // Bad flags
+//     ar & mbNotErase;
+//     ar & mbToBeErased;
+//     ar & mbBad;    
+
+//     ar & mHalfBaseline; // Only for visualization
+
+//     ar & mpMap;
+// }
 
 } //namespace ORB_SLAM

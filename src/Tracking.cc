@@ -1622,13 +1622,13 @@ void Tracking::SaveMap() {
     // Map tmp_map = *mpMap;
     ofstream ofs("/home/yisha/Workspace/VO/ORB_SLAM2/Map/map.txt");
     boost::archive::text_oarchive oa(ofs);
-    // oa << &mpMap;
+    oa << *mpMap;
 }
 
 void Tracking::LoadMap() {
     std::ifstream ifs("/home/yisha/Workspace/VO/ORB_SLAM2/Map/map.txt");
     boost::archive::text_iarchive ia(ifs);
-    // ia >> &mpMap;
+    ia >> *mpMap;
 }
 
 } //namespace ORB_SLAM

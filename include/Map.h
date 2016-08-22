@@ -40,9 +40,28 @@ class KeyFrame;
 class Map {
     friend class boost::serialization::access;
     template<class Archive>
-    void save(Archive& ar, const unsigned int version) const;
+    void save(Archive& ar, const unsigned int version) const {
+        ar & mvpKeyFrameOrigins;
+        ar & mspMapPoints;
+        ar & mspKeyFrames;
+
+        ar & mvpReferenceMapPoints;
+        ar & mnMaxKFid;
+        ar & mKeyFrameNum;
+    }
+
     template<class Archive>
-    void load(Archive& ar, const unsigned int version);
+    void load(Archive& ar, const unsigned int version) {
+        ar & mvpKeyFrameOrigins;
+        ar & mspMapPoints;
+        ar & mspKeyFrames;
+
+        ar & mvpReferenceMapPoints;
+        ar & mnMaxKFid;
+        ar & mKeyFrameNum;
+
+        // Set BoW objects
+    }
     BOOST_SERIALIZATION_SPLIT_MEMBER();
 
 public:

@@ -43,10 +43,121 @@ class KeyFrameDatabase;
 
 class KeyFrame {
     friend class boost::serialization::access;
+    // template<class Archive>
+    // void save(Archive& ar, const unsigned int version) const;
+    // template<class Archive>
+    // void load(Archive& ar, const unsigned int version);
+    // BOOST_SERIALIZATION_SPLIT_MEMBER();
+
     template<class Archive>
-    void serialize(Archive& ar, const unsigned int version);
+    void serialize(Archive& ar, const unsigned int version) {
+        ar & nNextId;
+        ar & mnId;
+        ar & mnFrameId;
+
+        ar & mTimeStamp;
+
+        // Grid (to speed up feature matching)
+        ar & mnGridCols;
+        ar & mnGridRows;
+        ar & mfGridElementWidthInv;
+        ar & mfGridElementHeightInv;
+
+        // Variables used by the tracking
+        ar & mnTrackReferenceForFrame;
+        ar & mnFuseTargetForKF;
+
+        // Variables used by the local mapping
+        ar & mnBALocalForKF;
+        ar & mnBAFixedForKF;
+
+        // Variables used by the keyframe database
+        ar & mnLoopQuery;
+        ar & mnLoopWords;
+        ar & mLoopScore;
+        ar & mnRelocQuery;
+        ar & mnRelocWords;
+        ar & mRelocScore;
+
+        // Variables used by loop closing
+        ar & mTcwGBA;
+        ar & mTcwBefGBA;
+        ar & mnBAGlobalForKF;
+
+        // Calibration parameters
+        ar & fx & fy & cx & cy & invfx & invfy & mbf & mb & mThDepth;
+
+        // Number of KeyPoints
+        ar & N;
+
+        // KeyPoints, stereo coordinate and descriptors (all associated by an index)
+        ar & mvKeys;
+        ar & mvKeysUn;
+        ar & mvuRight; // negative value for monocular points
+        ar & mvDepth; // negative value for monocular points
+        ar & mDescriptors;
+
+        //BoW
+        // DBoW2::BowVector mBowVec;
+        // DBoW2::FeatureVector mFeatVec;
+
+        // Pose relative to parent (this is computed when bad flag is activated)
+        ar & mTcp;
+
+        // Scale
+        ar & mnScaleLevels;
+        ar & mfScaleFactor;
+        ar & mfLogScaleFactor;
+        ar & mvScaleFactors;
+        ar & mvLevelSigma2;
+        ar & mvInvLevelSigma2;
+
+        // Image bounds and calibration
+        ar & mnMinX;
+        ar & mnMinY;
+        ar & mnMaxX;
+        ar & mnMaxY;
+        ar & mK;
+
+        // SE3 Pose and camera center
+        ar & Tcw;
+        ar & Twc;
+        ar & Ow;
+
+        ar & Cw; // Stereo middel point. Only for visualization
+
+        // MapPoints associated to keypoints
+        ar & mvpMapPoints;
+
+        // BoW
+        ar & mpKeyFrameDB;
+        // ar & mpORBvocabulary;
+
+        // Grid over the image to speed up feature matching
+        ar & mGrid;
+
+        ar & mConnectedKeyFrameWeights;
+        ar & mvpOrderedConnectedKeyFrames;
+        ar & mvOrderedWeights;
+
+        // Spanning Tree and Loop Edges
+        ar & mbFirstConnection;
+        ar & mpParent;
+        ar & mspChildrens;
+        ar & mspLoopEdges;
+
+        // Bad flags
+        ar & mbNotErase;
+        ar & mbToBeErased;
+        ar & mbBad;    
+
+        ar & mHalfBaseline; // Only for visualization
+
+        ar & mpMap;
+    }
 
 public:
+    KeyFrame() {}
     KeyFrame(Frame &F, Map* pMap, KeyFrameDatabase* pKFDB);
 
     // Pose functions
@@ -126,15 +237,25 @@ public:
 
     static long unsigned int nNextId;
     long unsigned int mnId;
-    const long unsigned int mnFrameId;
+    // const long unsigned int mnFrameId;
 
-    const double mTimeStamp;
+    // const double mTimeStamp;
+
+    // // Grid (to speed up feature matching)
+    // const int mnGridCols;
+    // const int mnGridRows;
+    // const float mfGridElementWidthInv;
+    // const float mfGridElementHeightInv;
+
+    long unsigned int mnFrameId;
+
+    double mTimeStamp;
 
     // Grid (to speed up feature matching)
-    const int mnGridCols;
-    const int mnGridRows;
-    const float mfGridElementWidthInv;
-    const float mfGridElementHeightInv;
+    int mnGridCols;
+    int mnGridRows;
+    float mfGridElementWidthInv;
+    float mfGridElementHeightInv;
 
     // Variables used by the tracking
     long unsigned int mnTrackReferenceForFrame;
@@ -157,18 +278,31 @@ public:
     cv::Mat mTcwBefGBA;
     long unsigned int mnBAGlobalForKF;
 
+    // // Calibration parameters
+    // const float fx, fy, cx, cy, invfx, invfy, mbf, mb, mThDepth;
+
+    // // Number of KeyPoints
+    // const int N;
+
+    // // KeyPoints, stereo coordinate and descriptors (all associated by an index)
+    // const std::vector<cv::KeyPoint> mvKeys;
+    // const std::vector<cv::KeyPoint> mvKeysUn;
+    // const std::vector<float> mvuRight; // negative value for monocular points
+    // const std::vector<float> mvDepth; // negative value for monocular points
+    // const cv::Mat mDescriptors;
+
     // Calibration parameters
-    const float fx, fy, cx, cy, invfx, invfy, mbf, mb, mThDepth;
+    float fx, fy, cx, cy, invfx, invfy, mbf, mb, mThDepth;
 
     // Number of KeyPoints
-    const int N;
+    int N;
 
     // KeyPoints, stereo coordinate and descriptors (all associated by an index)
-    const std::vector<cv::KeyPoint> mvKeys;
-    const std::vector<cv::KeyPoint> mvKeysUn;
-    const std::vector<float> mvuRight; // negative value for monocular points
-    const std::vector<float> mvDepth; // negative value for monocular points
-    const cv::Mat mDescriptors;
+    std::vector<cv::KeyPoint> mvKeys;
+    std::vector<cv::KeyPoint> mvKeysUn;
+    std::vector<float> mvuRight; // negative value for monocular points
+    std::vector<float> mvDepth; // negative value for monocular points
+    cv::Mat mDescriptors;
 
     //BoW
     DBoW2::BowVector mBowVec;
@@ -177,20 +311,37 @@ public:
     // Pose relative to parent (this is computed when bad flag is activated)
     cv::Mat mTcp;
 
+    // // Scale
+    // const int mnScaleLevels;
+    // const float mfScaleFactor;
+    // const float mfLogScaleFactor;
+    // const std::vector<float> mvScaleFactors;
+    // const std::vector<float> mvLevelSigma2;
+    // const std::vector<float> mvInvLevelSigma2;
+
+    // // Image bounds and calibration
+    // const int mnMinX;
+    // const int mnMinY;
+    // const int mnMaxX;
+    // const int mnMaxY;
+    // const cv::Mat mK;
+
     // Scale
-    const int mnScaleLevels;
-    const float mfScaleFactor;
-    const float mfLogScaleFactor;
-    const std::vector<float> mvScaleFactors;
-    const std::vector<float> mvLevelSigma2;
-    const std::vector<float> mvInvLevelSigma2;
+    int mnScaleLevels;
+    float mfScaleFactor;
+    float mfLogScaleFactor;
+    std::vector<float> mvScaleFactors;
+    std::vector<float> mvLevelSigma2;
+    std::vector<float> mvInvLevelSigma2;
 
     // Image bounds and calibration
-    const int mnMinX;
-    const int mnMinY;
-    const int mnMaxX;
-    const int mnMaxY;
-    const cv::Mat mK;
+    int mnMinX;
+    int mnMinY;
+    int mnMaxX;
+    int mnMaxY;
+    cv::Mat mK;
+
+    // Frame mF;
 
 
     // The following variables need to be accessed trough a mutex to be thread safe.

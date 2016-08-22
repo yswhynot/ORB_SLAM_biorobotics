@@ -20,6 +20,12 @@
 #include <boost/serialization/version.hpp>
 #include <boost/serialization/split_member.hpp>
 
+#include "KeyFrame.h"
+#include "Frame.h"
+#include "Map.h"
+#include "MapPoint.h"
+#include "KeyFrameDatabase.h"
+
 BOOST_SERIALIZATION_SPLIT_FREE(::cv::Mat);
 namespace boost {
 	namespace serialization {
@@ -86,5 +92,53 @@ namespace boost {
 		}
 	}
 }
+
+// namespace boost {
+// 	namespace serialization {
+// 		// MapPoint constructor serialization
+// 		template<class Archive>
+// 		inline void save_construct_data(Archive & ar, const MapPoint* mp, const unsigned int file_version) {
+// 		    // save data required to construct instance
+// 			ar << mp->mWorldPos;
+// 			ar << mp->mpRefKF;
+// 			ar << mp->mpMap;
+// 		}
+
+// 		template<class Archive>
+// 		inline void load_construct_data(Archive & ar, MapPoint* mp, const unsigned int file_version ) {
+// 		    // retrieve data from archive required to construct new instance
+// 			cv::Mat mWorldPos;
+// 			KeyFrame* mpRefKF;
+// 			Map* mpMap;
+
+// 			ar >> mWorldPos;
+// 			ar >> mpRefKF;
+// 			ar >> mpMap;
+// 		    // invoke inplace constructor to initialize instance of my_class
+// 			::new(mp)MapPoint(mWorldPos, mpRefKF, mpMap);
+// 		}
+
+// 		// KeyFrame constructor serialization
+// 		template<class Archive>
+// 		inline void save_construct_data(Archive& ar, const KeyFrame* kf, const unsigned int version) {
+// 			ar << kf->mF;
+// 			ar << kf->mpMap;
+// 			ar << kf->mpKeyFrameDB;
+// 		}
+
+// 		template<class Archive>
+// 		inline void load_construct_data(Archive& ar, KeyFrame* kf, const unsigned int version) {
+// 			Frame mF;
+// 			Map* mpMap;
+// 			KeyFrameDatabase* mpKeyFrameDB;
+
+// 			ar >> mF;
+// 			ar >> mpMap;
+// 			ar >> mpKeyFrameDB;
+
+// 			::new(kf)KeyFrame(mF, mpMap, mpKeyFrameDB);
+// 		}
+// 	}
+// }
 
 #endif /* CVMAT_SERIALIZE_HPP_ */

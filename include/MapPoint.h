@@ -40,8 +40,66 @@ class Frame;
 class MapPoint {
     friend class boost::serialization::access;
     template<class Archive>
-    void serialize(Archive& ar, const unsigned int version);
+    void serialize(Archive& ar, const unsigned int version) {
+        ar & mnId;
+        ar & nNextId;
+        ar & mnFirstKFid;
+        ar & mnFirstFrame;
+        ar & nObs;
+
+        // Variables used by the tracking
+        ar & mTrackProjX;
+        ar & mTrackProjY;
+        ar & mTrackProjXR;
+        ar & mbTrackInView;
+        ar & mnTrackScaleLevel;
+        ar & mTrackViewCos;
+        ar & mnTrackReferenceForFrame;
+        ar & mnLastFrameSeen;
+
+        // Variables used by local mapping
+        ar & mnBALocalForKF;
+        ar & mnFuseCandidateForKF;
+
+        // Variables used by loop closing
+        ar & mnLoopPointForKF;
+        ar & mnCorrectedByKF;
+        ar & mnCorrectedReference;    
+        ar & mPosGBA;
+        ar & mnBAGlobalForKF;
+
+        // protected
+        ar & mWorldPos;
+
+        // Keyframes observing the point and associated index in keyframe
+        ar & mObservations;
+
+         // Mean viewing direction
+        ar & mNormalVector;
+
+         // Best descriptor to fast matching
+        ar & mDescriptor;
+
+         // Reference KeyFrame
+        ar & mpRefKF;
+
+         // Tracking counters
+        ar & mnVisible;
+        ar & mnFound;
+
+        // Bad flag (we do not currently erase MapPoint from memory)
+        ar & mbBad;
+        ar & mpReplaced;
+
+        // Scale invariance distances
+        ar & mfMinDistance;
+        ar & mfMaxDistance;
+
+        ar & mpMap;
+    }
+
 public:
+    MapPoint() {}
     MapPoint(const cv::Mat &Pos, KeyFrame* pRefKF, Map* pMap);
     MapPoint(const cv::Mat &Pos,  Map* pMap, Frame* pFrame, const int &idxF);
 

@@ -120,30 +120,31 @@ void Map::clear()
     mvpKeyFrameOrigins.clear();
 }
 
-template<class Archive>
-void Map::save(Archive& ar, const unsigned int version) const {
-    ar & mvpKeyFrameOrigins;
-    ar & mspMapPoints;
-    ar & mspKeyFrames;
+// template<class Archive>
+// void Map::save(Archive& ar, const unsigned int version) const {
+//     ar & mvpKeyFrameOrigins;
+//     ar & mspMapPoints;
+//     ar & mspKeyFrames;
 
-    ar & mvpReferenceMapPoints;
-    ar & mnMaxKFid;
-    ar & mMutexMap;
-    ar & mKeyFrameNum;
-}
+//     ar & mvpReferenceMapPoints;
+//     ar & mnMaxKFid;
+//     ar & mMutexMap;
+//     ar & mKeyFrameNum;
+// }
 
-template<class Archive>
-void Map::load(Archive& ar, const unsigned int version) {
-    ar & mvpKeyFrameOrigins;
-    ar & mspMapPoints;
-    ar & mspKeyFrames;
+// template<class Archive>
+// void Map::load(Archive& ar, const unsigned int version) {
+//     ar & mvpKeyFrameOrigins;
+//     ar & mspMapPoints;
+//     ar & mspKeyFrames;
 
-    ar & mvpReferenceMapPoints;
-    ar & mnMaxKFid;
-    ar & mMutexMap;
-    ar & mKeyFrameNum;
+//     ar & mvpReferenceMapPoints;
+//     ar & mnMaxKFid;
+//     ar & mMutexMap;
+//     ar & mKeyFrameNum;
 
-    // Set BoW objects
-}
+//     // Set BoW objects
+// }
+// BOOST_SERIALIZATION_SPLIT_MEMBER();
 
 } //namespace ORB_SLAM
