@@ -662,6 +662,7 @@ float KeyFrame::ComputeSceneMedianDepth(const int q)
     return vDepths[(vDepths.size()-1)/q];
 }
 
+template<class Archive>
 void KeyFrame::serialize(Archive& ar, const unsigned int version) {
     ar & nNextId;
     ar & mnId;

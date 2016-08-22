@@ -378,6 +378,10 @@ void System::SaveKeyFrameTrajectoryTUM(const string &filename)
 
     f.close();
     cout << endl << "trajectory saved!" << endl;
+
+    cout << endl << "Saving map..." << endl;
+    mpTracker->SaveMap();
+    cout << "Map saved!" << endl;
 }
 
 void System::SaveTrajectoryKITTI(const string &filename)

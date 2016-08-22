@@ -120,6 +120,7 @@ void Map::clear()
     mvpKeyFrameOrigins.clear();
 }
 
+template<class Archive>
 void Map::save(Archive& ar, const unsigned int version) const {
     ar & mvpKeyFrameOrigins;
     ar & mspMapPoints;
@@ -131,17 +132,7 @@ void Map::save(Archive& ar, const unsigned int version) const {
     ar & mKeyFrameNum;
 }
 
-void Map::save(Archive& ar, const unsigned int version) const {
-    ar & mvpKeyFrameOrigins;
-    ar & mspMapPoints;
-    ar & mspKeyFrames;
-
-    ar & mvpReferenceMapPoints;
-    ar & mnMaxKFid;
-    ar & mMutexMap;
-    ar & mKeyFrameNum;
-}
-
+template<class Archive>
 void Map::load(Archive& ar, const unsigned int version) {
     ar & mvpKeyFrameOrigins;
     ar & mspMapPoints;

@@ -32,8 +32,10 @@
 
 #include "Optimizer.h"
 #include "PnPsolver.h"
+#include "CVSerialize.h"
 
 #include <iostream>
+#include <fstream>
 
 #include <mutex>
 
@@ -1617,7 +1619,16 @@ void Tracking::InformOnlyTracking(const bool &flag)
 }
 
 void Tracking::SaveMap() {
-    
+    // Map tmp_map = *mpMap;
+    ofstream ofs("/home/yisha/Workspace/VO/ORB_SLAM2/Map/map.txt");
+    boost::archive::text_oarchive oa(ofs);
+    // oa << &mpMap;
+}
+
+void Tracking::LoadMap() {
+    std::ifstream ifs("/home/yisha/Workspace/VO/ORB_SLAM2/Map/map.txt");
+    boost::archive::text_iarchive ia(ifs);
+    // ia >> &mpMap;
 }
 
 } //namespace ORB_SLAM
