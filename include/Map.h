@@ -66,6 +66,7 @@ class Map {
 
 public:
     Map();
+    Map(Map* pMap);
 
     void AddKeyFrame(KeyFrame* pKF);
     void AddMapPoint(MapPoint* pMP);

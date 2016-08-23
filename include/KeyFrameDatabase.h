@@ -62,7 +62,12 @@ namespace ORB_SLAM2
    // Relocalization
     std::vector<KeyFrame*> DetectRelocalizationCandidates(Frame* F);
 
-  protected:
+    KeyFrameDatabase& operator=(const KeyFrameDatabase& KFD) {
+      mvInvertedFile = KFD.mvInvertedFile;
+      return *this;
+    }
+
+  // protected:
 
   // Associated vocabulary
     const ORBVocabulary* mpVoc;

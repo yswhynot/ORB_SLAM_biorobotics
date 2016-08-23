@@ -662,6 +662,122 @@ float KeyFrame::ComputeSceneMedianDepth(const int q)
     return vDepths[(vDepths.size()-1)/q];
 }
 
+KeyFrame& KeyFrame::operator=(KeyFrame& KF) {
+    nNextId = KF.nNextId;
+    mnId = KF.mnId;
+    mnFrameId = KF.mnFrameId;
+
+    mTimeStamp = KF.mTimeStamp;
+
+    // Grid (to speed up feature matching)
+    mnGridCols = KF.mnGridCols;
+    mnGridRows = KF.mnGridRows;
+    mfGridElementWidthInv = KF.mfGridElementWidthInv;
+    mfGridElementHeightInv = KF.mfGridElementHeightInv;
+
+    // Variables used by the tracking
+    mnTrackReferenceForFrame = KF.mnTrackReferenceForFrame;
+    mnFuseTargetForKF = KF.mnFuseTargetForKF;
+
+    // Variables used by the local mapping
+    mnBALocalForKF = KF.mnBALocalForKF;
+    mnBAFixedForKF = KF.mnBAFixedForKF;
+
+    // Variables used by the keyframe database
+    mnLoopQuery = KF.mnLoopQuery;
+    mnLoopWords = KF.mnLoopWords;
+    mLoopScore = KF.mLoopScore;
+    mnRelocQuery = KF.mnRelocQuery;
+    mnRelocWords = KF.mnRelocWords;
+    mRelocScore = KF.mRelocScore;
+
+    // Variables used by loop closing
+    mTcwGBA = KF.mTcwGBA;
+    mTcwBefGBA = KF.mTcwBefGBA;
+    mnBAGlobalForKF = KF.mnBAGlobalForKF;
+
+    // Calibration parameters
+    fx = KF.fx;
+    fy = KF.fy;
+    cx = KF.cx;
+    cy = KF.cy;
+    invfx = KF.invfx;
+    invfy = KF.invfy;
+    mbf = KF.mbf;
+    mb = KF.mb;
+    mThDepth = KF.mThDepth;
+
+    // Number of KeyPoints
+    N = KF.N;
+
+    // KeyPoints, stereo coordinate and descriptors (all associated by an index)
+    mvKeys = KF.mvKeys;
+    mvKeysUn = KF.mvKeysUn;
+    mvuRight = KF.mvuRight; // negative value for monocular points
+    mvDepth = KF.mvDepth; // negative value for monocular points
+    mDescriptors = KF.mDescriptors;
+
+    //BoW
+    // DBoW2::BowVector mBowVec;
+    // DBoW2::FeatureVector mFeatVec;
+
+    // Pose relative to parent (this is computed when bad flag is activated)
+    mTcp = KF.mTcp;
+
+    // Scale
+    mnScaleLevels = KF.mnScaleLevels;
+    mfScaleFactor = KF.mfScaleFactor;
+    mfLogScaleFactor = KF.mfLogScaleFactor;
+    mvScaleFactors = KF.mvScaleFactors;
+    mvLevelSigma2 = KF.mvLevelSigma2;
+    mvInvLevelSigma2 = KF.mvInvLevelSigma2;
+
+    // Image bounds and calibration
+    mnMinX = KF.mnMinX;
+    mnMinY = KF.mnMinY;
+    mnMaxX = KF.mnMaxX;
+    mnMaxY = KF.mnMaxY;
+    mK = KF.mK;
+
+    // SE3 Pose and camera center
+    Tcw = KF.Tcw;
+    Twc = KF.Twc;
+    Ow = KF.Ow;
+
+    Cw = KF.Cw; // Stereo middel point. Only for visualization
+
+    // MapPoints associated to keypoints
+    mvpMapPoints = KF.mvpMapPoints;
+
+    // BoW
+    mpKeyFrameDB = KF.mpKeyFrameDB;
+    // ar & mpORBvocabulary;
+
+    // Grid over the image to speed up feature matching
+    mGrid = KF.mGrid;
+
+    mConnectedKeyFrameWeights = KF.mConnectedKeyFrameWeights;
+    mvpOrderedConnectedKeyFrames = KF.mvpOrderedConnectedKeyFrames;
+    mvOrderedWeights = KF.mvOrderedWeights;
+
+    // Spanning Tree and Loop Edges
+    mbFirstConnection = KF.mbFirstConnection;
+    mpParent = KF.mpParent;
+    mspChildrens = KF.mspChildrens;
+    mspLoopEdges = KF.mspLoopEdges;
+
+    // Bad flags
+    mbNotErase = KF.mbNotErase;
+    mbToBeErased = KF.mbToBeErased;
+    mbBad = KF.mbBad;    
+
+    mHalfBaseline = KF.mHalfBaseline; // Only for visualization
+
+    mpMap = KF.mpMap;
+
+    return *this;
+}
+
 // template<class Archive>
 // void KeyFrame::save(Archive& ar, const unsigned int version) const {
 //     ar & nNextId;

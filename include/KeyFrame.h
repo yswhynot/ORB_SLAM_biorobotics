@@ -235,6 +235,8 @@ public:
         mpORBvocabulary = pORBVocaculary;
     }
     // The following variables are accesed from only 1 thread or never change (no mutex needed).
+
+    KeyFrame operator=(const KeyFrame& KF);
 public:
 
     static long unsigned int nNextId;
@@ -347,7 +349,7 @@ public:
 
 
     // The following variables need to be accessed trough a mutex to be thread safe.
-protected:
+// protected:
 
     // SE3 Pose and camera center
     cv::Mat Tcw;

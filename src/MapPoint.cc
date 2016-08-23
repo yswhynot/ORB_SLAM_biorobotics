@@ -392,6 +392,66 @@ int MapPoint::PredictScale(const float &currentDist, const float &logScaleFactor
     return ceil(log(ratio)/logScaleFactor);
 }
 
+MapPoint& MapPoint::operator=(MapPoint& MP) {
+    mnId = MP.mnId;
+    nNextId = MP.nNextId;
+    mnFirstKFid = MP.mnFirstKFid;
+    mnFirstFrame = MP.mnFirstFrame;
+    nObs = MP.nObs;
+
+    // Variables used by the tracking
+    mTrackProjX = MP.mTrackProjX;
+    mTrackProjY = MP.mTrackProjY;
+    mTrackProjXR = MP.mTrackProjXR;
+    mbTrackInView = MP.mbTrackInView;
+    mnTrackScaleLevel = MP.mnTrackScaleLevel;
+    mTrackViewCos = MP.mTrackViewCos;
+    mnTrackReferenceForFrame = MP.mnTrackReferenceForFrame;
+    mnLastFrameSeen = MP.mnLastFrameSeen;
+
+    // Variables used by local mapping
+    mnBALocalForKF = MP.mnBALocalForKF;
+    mnFuseCandidateForKF = MP.mnFuseCandidateForKF;
+
+    // Variables used by loop closing
+    mnLoopPointForKF = MP.mnLoopPointForKF;
+    mnCorrectedByKF = MP.mnCorrectedByKF;
+    mnCorrectedReference = MP.mnCorrectedReference;    
+    mPosGBA = MP.mPosGBA;
+    mnBAGlobalForKF = MP.mnBAGlobalForKF;
+
+    // protected
+    mWorldPos = MP.mWorldPos;
+
+    // Keyframes observing the point and associated index in keyframe
+    mObservations = MP.mObservations;
+
+     // Mean viewing direction
+    mNormalVector = MP.mNormalVector;
+
+     // Best descriptor to fast matching
+    mDescriptor = MP.mDescriptor;
+
+     // Reference KeyFrame
+    mpRefKF = MP.mpRefKF;
+
+     // Tracking counters
+    mnVisible = MP.mnVisible;
+    mnFound = MP.mnFound;
+
+    // Bad flag (we do not currently erase MapPoint from memory)
+    mbBad = MP.mbBad;
+    mpReplaced = MP.mpReplaced;
+
+    // Scale invariance distances
+    mfMinDistance = MP.mfMinDistance;
+    mfMaxDistance = MP.mfMaxDistance;
+
+    mpMap = MP.mpMap;
+
+    return *this;
+}
+
 // template<class Archive>
 // void MapPoint::serialize(Archive& ar, const unsigned int version) {
 //     ar & mnId;

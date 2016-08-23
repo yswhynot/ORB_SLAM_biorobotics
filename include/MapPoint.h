@@ -141,6 +141,8 @@ public:
     float GetMaxDistanceInvariance();
     int PredictScale(const float &currentDist, const float &logScaleFactor);
 
+    MapPoint& operator=(const MapPoint& MP);
+
 public:
     long unsigned int mnId;
     static long unsigned int nNextId;
@@ -172,7 +174,7 @@ public:
 
     static std::mutex mGlobalMutex;
 
-protected:    
+// protected:    
 
      // Position in absolute coordinates
      cv::Mat mWorldPos;

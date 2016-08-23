@@ -29,6 +29,15 @@ Map::Map():mnMaxKFid(0), mKeyFrameNum(0)
 {
 }
 
+Map::Map(Map* pMap) {
+    mvpKeyFrameOrigins = pMap->mvpKeyFrameOrigins;
+    mspMapPoints = pMap->GetAllMapPoints();
+    mspKeyFrames = pMap->GetAllKeyFrames();
+    mvpReferenceMapPoints = pMap->GetReferenceMapPoints();
+    mnMaxKFid = pMap->GetMaxKFid();
+    mKeyFrameNum = pMap->GetKeyFrameNumber();
+}
+
 void Map::AddKeyFrame(KeyFrame *pKF)
 {
     unique_lock<mutex> lock(mMutexMap);

@@ -1620,15 +1620,18 @@ void Tracking::InformOnlyTracking(const bool &flag)
 
 void Tracking::SaveMap() {
     // Map tmp_map = *mpMap;
+    // ofstream ofs("/home/yisha/Workspace/VO/ORB_SLAM2/Map/map.txt");
     ofstream ofs("/home/yisha/Workspace/VO/ORB_SLAM2/Map/map.txt");
     boost::archive::text_oarchive oa(ofs);
-    oa << *mpMap;
+    Map tmpmap(mpMap);
+    oa << tmpmap;
 }
 
 bool Tracking::LoadMap() {
     cout << "\nLoading map..." << endl;
 
-    Map* tmpMap; 
+    // Map* tmpMap;
+    Map tmpMap;
     ifstream ifs("/home/yisha/Workspace/VO/ORB_SLAM2/Map/map.txt");
     if(!ifs.good()) {
         printf("ifs not good\n");
@@ -1638,12 +1641,12 @@ bool Tracking::LoadMap() {
     printf("after ifstream\n");
     boost::archive::text_iarchive ia(ifs);
     printf("after archive\n");
-    ia >> *tmpMap;
+    ia >> tmpMap;
     printf("after ia\n");
 
     // Set ORB Vocabulary
-    tmpMap->SetORBVocabulary(mpORBVocabulary);
-    mpMap = tmpMap;
+    tmpMap.SetORBVocabulary(mpORBVocabulary);
+    mpMap = &tmpMap;
 
     cout << "Loading map finished!" << endl;
 
