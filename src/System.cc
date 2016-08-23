@@ -90,9 +90,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, const eS
                              mpMap, mpKeyFrameDatabase, strSettingsFile, mSensor);
 
     // Load map?
-    bool loadMap = true;
-    if(loadMap)
-        mpTracker->LoadMap();
+    if(mpTracker->LoadMap())
+        cout << "Load map" << endl;
 
     //Initialize the Local Mapping thread and launch
     mpLocalMapper = new LocalMapping(mpMap, mSensor==MONOCULAR);

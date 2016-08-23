@@ -79,7 +79,7 @@ public:
     bool IsInitFinished() {return isInit;}
 
     void SaveMap();
-    void LoadMap();
+    bool LoadMap();
 
 public:
 
