@@ -147,4 +147,12 @@ void Map::clear()
 // }
 // BOOST_SERIALIZATION_SPLIT_MEMBER();
 
+void Map::SetORBVocabulary(ORBVocabulary* pORBVocaculary) {
+    std::set<KeyFrame*>::iterator it;
+    for(it = mspKeyFrames.begin(); it != mspKeyFrames.end(); it++) {
+        KeyFrame* pKF = *it;
+        pKF->SetORBVocabulary(pORBVocaculary);
+    }
+}
+
 } //namespace ORB_SLAM

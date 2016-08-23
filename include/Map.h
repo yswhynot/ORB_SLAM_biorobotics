@@ -92,6 +92,7 @@ public:
     std::mutex mMutexPointCreation;
 
     long int GetKeyFrameNumber() {return mKeyFrameNum;}
+    void SetORBVocabulary(ORBVocabulary* pORBVocaculary);
 
 protected:
     std::set<MapPoint*> mspMapPoints;
